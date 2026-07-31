@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
-import { PageHero, Section, Card, CheckItem, CTABanner } from "@/components/ui";
+import { PageHero, Section, Card, CheckItem } from "@/components/ui";
+import PractiFlowPeek from "@/components/PractiFlowPeek";
+import EarlyAccessForm from "@/components/EarlyAccessForm";
 import { products } from "@/content/site";
 
 const p = products.practiflow;
@@ -13,6 +15,26 @@ export default function PractiFlowPage() {
   return (
     <>
       <PageHero eyebrow={p.category} title={p.tagline} description={p.description} />
+
+      <Section
+        title="เห็นงานทั้งสำนักงาน ก่อนถึงกำหนด"
+        description="ภ.ง.ด., ภ.พ.30, ประกันสังคม, ปิดงบ — deadline ของลูกค้าทุกรายอยู่ในระบบเดียวที่ทั้งทีมเห็นตรงกัน ไม่ได้อยู่ในความจำของใครคนใดคนหนึ่ง"
+      >
+        <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-14">
+          <ul className="space-y-4">
+            <CheckItem>
+              งานใกล้ครบกำหนดและงานที่รอเอกสารจากลูกค้า ถูกยกขึ้นมาให้เห็นก่อน — ไม่มีงานหลุดเพราะ &ldquo;ลืม&rdquo;
+            </CheckItem>
+            <CheckItem>
+              ลูกค้าโทรมาถามว่างานถึงไหน ตอบได้ทันที ไม่ต้องขอเวลาไปถามทีมก่อน
+            </CheckItem>
+            <CheckItem>
+              ประวัติการติดต่อและเงื่อนไขของลูกค้าอยู่ในระบบกลาง — พนักงานลาออก ความรู้ไม่หายตามไปด้วย
+            </CheckItem>
+          </ul>
+          <PractiFlowPeek />
+        </div>
+      </Section>
 
       <Section title="ฟีเจอร์หลัก" tint>
         <div className="grid gap-5 md:grid-cols-3">
@@ -61,12 +83,13 @@ export default function PractiFlowPage() {
         </div>
       </Section>
 
-      <CTABanner
-        title={`จัดระเบียบสำนักงานด้วย ${p.name}`}
-        description="นัด demo 30 นาที เราจะตั้งค่าตัวอย่างจากงานจริงของสำนักงานคุณให้ดูเลย"
-        buttonLabel="นัด Demo ฟรี"
-        buttonHref="/contact"
-      />
+      <Section
+        title={`ลงชื่อใช้ ${p.name} ก่อนใคร`}
+        description="เราใช้ระบบนี้บริหารงานสำนักงานของเราเอง และกำลังเปิดให้สำนักงานภายนอกใช้เป็นรุ่นแรก — ลงชื่อไว้ก่อนได้นัด demo 30 นาที เราจะตั้งค่าตัวอย่างจากงานจริงของสำนักงานคุณให้ดูเลย"
+        tint
+      >
+        <EarlyAccessForm productName={p.name} />
+      </Section>
     </>
   );
 }

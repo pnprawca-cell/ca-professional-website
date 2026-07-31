@@ -48,8 +48,8 @@
 → คัดลอก form ID (ตัวท้ายของ endpoint เช่น `mqkvabcd`) มาใส่ `formspreeFormId` ใน `content/site.ts`
 
 ### ฟอร์ม Early Access (รองรับ Gate 0 pre-sell ของ Audit Platform Phase 2)
-- component: `components/EarlyAccessForm.tsx` (รับ prop `productName` — ใช้ซ้ำกับ PractiFlow ได้)
-- ฝังท้ายหน้า /products/auditflow พร้อม consent checkbox อ้างหน้า privacy
+- component: `components/EarlyAccessForm.tsx` (รับ prop `productName`)
+- ฝังท้ายหน้า /products/auditflow และ /products/practiflow (31 ก.ค. 2569) พร้อม consent checkbox อ้างหน้า privacy
 - เป้าหมาย: เก็บรายชื่อ CPA/สำนักงานที่สนใจก่อนเปิดขายต้นปี 2570 (ดู docs/Audit_Platform_Phase2_Commercial_Plan.md ในโปรเจกต์ Audit-platform)
 
 ### หน้าที่ควรเพิ่มภายหลัง
@@ -80,9 +80,11 @@
 
 ## สิ่งที่ต้องทำก่อนเผยแพร่จริง (checklist)
 - [x] จด domain — **ca-professional.com** (ซื้อแล้ว 31 ก.ค. 2569; เปลี่ยนจากแผนเดิม `caprofessional.co.th` — โค้ดอัปเดต `siteUrl`/`appUrl` ใน `content/site.ts` แล้ว) — ชื่อ product ขั้นสุดท้ายยังรอ confirm (ดู [company-website-project memory])
-- [ ] Deploy ขึ้น hosting จริง (แนะนำ Vercel) + ต่อ DNS ของ ca-professional.com เข้ากับ hosting
-- [ ] อัปเดตข้อมูลติดต่อจริงใน `content/site.ts` (อีเมลบริษัท @ca-professional.com, เบอร์, LINE, ที่อยู่) — ตอนนี้ยังเป็น placeholder ทั้งหมด
-- [ ] ใส่เลขทะเบียนนิติบุคคล / ข้อมูลผู้สอบบัญชีตามที่สภาวิชาชีพกำหนด
+- [x] Deploy ขึ้น Vercel + ต่อ DNS กับ Z.com เสร็จแล้ว (31 ก.ค. 2569) — repo: github.com/pnprawca-cell/ca-professional-website
+      `ca-professional.com` เป็น production domain หลัก (A record → 216.198.79.1), `www.ca-professional.com` ตั้ง 307 redirect มาที่ apex แล้ว — ยืนยันด้วย curl ทั้งสอง URL แล้ว
+- [x] เลขทะเบียนนิติบุคคล + เลขที่ใบอนุญาตผู้สอบบัญชี — ใส่ในโค้ดแล้ว โชว์ที่ footer ทุกหน้า (`content/site.ts`, `components/Footer.tsx`)
+- [x] เบอร์โทร — พราวให้ลบทิ้ง (31 ก.ค. 2569) ไม่ต้องมี ตัดออกจาก `content/site.ts` และหน้า /contact แล้ว
+- [ ] อัปเดตอีเมลบริษัทจริงใน `content/site.ts` — ตอนนี้ยังใช้ gmail ส่วนตัว, LINE `@caprofessional` ยืนยันเป็นของจริงแล้ว (31 ก.ค. 2569)
 - [ ] สมัคร Formspree แล้วใส่ `formspreeFormId` ใน `content/site.ts` (โค้ดฟอร์ม + privacy รองรับแล้ว — ดู "หมายเหตุฟอร์ม" ด้านบน)
 - [x] เพิ่มหน้า privacy policy (PDPA) — `/legal/privacy` (22 ก.ค. 2569)
 - [x] Open Graph image + favicon — generate จากโค้ดด้วยธีมแบรนด์แล้ว (31 ก.ค. 2569: `app/opengraph-image.tsx`, `app/icon.tsx` + sitemap/robots/404/JSON-LD)
