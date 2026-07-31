@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { PageHero, Section } from "@/components/ui";
 import ContactForm from "@/components/ContactForm";
 import { company } from "@/content/site";
@@ -73,6 +74,12 @@ export default function ContactPage() {
             </p>
           </div>
         </div>
+        <p className="mt-6 text-[15px] text-muted">
+          หลายคำถามมีคำตอบอยู่แล้วที่{" "}
+          <Link href="/faq" className="font-medium text-accent-ink hover:underline">
+            คำถามที่พบบ่อย →
+          </Link>
+        </p>
       </Section>
     </>
   );

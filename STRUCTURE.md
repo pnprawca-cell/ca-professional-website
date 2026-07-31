@@ -31,6 +31,7 @@
 /pricing                แนวทางราคา 3 กลุ่ม
 /blog                   บทความบัญชี/ภาษี เพื่อ SEO (เนื้อหาอยู่ที่ content/blog.ts)
 /blog/[slug]            หน้าอ่านบทความรายชิ้น
+/faq                    คำถามที่พบบ่อย 2 กลุ่ม (SME / สำนักงานบัญชี) — เนื้อหาที่ content/faq.ts
 /about                  เกี่ยวกับเรา (ความเชื่อ, เส้นทางบริษัท)
 /legal/privacy          นโยบายความเป็นส่วนตัว (PDPA) — ลิงก์จาก footer และ consent ในฟอร์ม
 /contact                ฟอร์มขอให้ติดต่อกลับ + ช่องทางติดต่อ
@@ -38,10 +39,13 @@
 ```
 
 ### หมายเหตุฟอร์ม
-ฟอร์มหน้า /contact และฟอร์ม Early Access (หน้า /products/auditflow) ยังไม่มี backend —
-กดส่งแล้วเปิดโปรแกรมอีเมลพร้อมข้อมูลที่กรอก (mailto) หน้า privacy เขียนสอดคล้องกับกลไกนี้แล้ว
-เมื่อพร้อมเก็บ lead จริงบนเซิร์ฟเวอร์: ต่อ Formspree/Google Sheets หรือทำ API route + ฐานข้อมูล
-แล้วต้องปรับข้อ 2 ของหน้า /legal/privacy ให้ตรงกับวิธีเก็บใหม่ด้วย
+ฟอร์มหน้า /contact และฟอร์ม Early Access (หน้า /products/auditflow) ต่อ Formspree แล้ว (31 ก.ค. 2569)
+แต่จะทำงานเมื่อใส่ `formspreeFormId` ใน `content/site.ts` — ระหว่างที่ยังว่าง ฟอร์มจะ fallback
+เป็นเปิดโปรแกรมอีเมล (mailto) แบบเดิม และหน้า /legal/privacy ข้อ 2 สลับข้อความตามกลไกที่ใช้อยู่อัตโนมัติ
+(logic กลางอยู่ที่ `lib/submitLead.ts` — ฟอร์มทั้งสองใช้ form ID เดียวกัน แยกประเภทด้วย field "ประเภทฟอร์ม")
+
+วิธีเปิดใช้: สมัคร formspree.io (ฟรี 50 submissions/เดือน) → New Form → ตั้งอีเมลรับเป็นอีเมลบริษัท
+→ คัดลอก form ID (ตัวท้ายของ endpoint เช่น `mqkvabcd`) มาใส่ `formspreeFormId` ใน `content/site.ts`
 
 ### ฟอร์ม Early Access (รองรับ Gate 0 pre-sell ของ Audit Platform Phase 2)
 - component: `components/EarlyAccessForm.tsx` (รับ prop `productName` — ใช้ซ้ำกับ PractiFlow ได้)
@@ -79,5 +83,8 @@
 - [ ] Deploy ขึ้น hosting จริง (แนะนำ Vercel) + ต่อ DNS ของ ca-professional.com เข้ากับ hosting
 - [ ] อัปเดตข้อมูลติดต่อจริงใน `content/site.ts` (อีเมลบริษัท @ca-professional.com, เบอร์, LINE, ที่อยู่) — ตอนนี้ยังเป็น placeholder ทั้งหมด
 - [ ] ใส่เลขทะเบียนนิติบุคคล / ข้อมูลผู้สอบบัญชีตามที่สภาวิชาชีพกำหนด
+- [ ] สมัคร Formspree แล้วใส่ `formspreeFormId` ใน `content/site.ts` (โค้ดฟอร์ม + privacy รองรับแล้ว — ดู "หมายเหตุฟอร์ม" ด้านบน)
 - [x] เพิ่มหน้า privacy policy (PDPA) — `/legal/privacy` (22 ก.ค. 2569)
-- [ ] ทำ Open Graph image + favicon จริงแทนโลโก้ตัวอักษร "CA"
+- [x] Open Graph image + favicon — generate จากโค้ดด้วยธีมแบรนด์แล้ว (31 ก.ค. 2569: `app/opengraph-image.tsx`, `app/icon.tsx` + sitemap/robots/404/JSON-LD)
+      ยังใช้ mark ตัวอักษร "CA" อยู่ — เมื่อมีโลโก้จริง แทนได้ด้วยไฟล์ `app/opengraph-image.png` / `app/icon.png`
+      หมายเหตุ: ข้อความบนภาพ OG เป็นอังกฤษ เพราะ engine วาดภาพของ Next วางวรรณยุกต์ไทยซ้อนสระบนไม่ได้ (รายละเอียดใน comment ของไฟล์)
