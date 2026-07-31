@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { company } from "@/content/site";
+import { hasFormBackend, submitLead } from "@/lib/submitLead";
 
 const interests = [
   "งานสอบบัญชี — ขอใบเสนอราคา",
@@ -13,6 +14,8 @@ const interests = [
 const inputClass =
   "w-full rounded-lg border border-line bg-card px-4 py-2.5 text-[15px] outline-none transition-colors focus:border-accent";
 
+type Status = "idle" | "sending" | "success" | "error" | "sent-mailto";
+
 export default function ContactForm() {
   const [form, setForm] = useState({
     name: "",
@@ -22,14 +25,13 @@ export default function ContactForm() {
     interest: interests[0],
     message: "",
   });
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<Status>("idle");
 
   const set = (key: keyof typeof form) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => setForm({ ...form, [key]: e.target.value });
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  const mailtoHref = () => {
     const subject = `[เว็บไซต์] ${form.interest} — ${form.name}`;
     const body = [
       `ชื่อ: ${form.name}`,
@@ -41,10 +43,52 @@ export default function ContactForm() {
       "รายละเอียดเพิ่มเติม:",
       form.message || "-",
     ].join("\n");
-    window.location.href = `mailto:${company.email}?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(body)}`;
-    setSent(true);
+    return `mailto:${company.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!hasFormBackend) {
+      window.location.href = mailtoHref();
+      setStatus("sent-mailto");
+      return;
+    }
+    setStatus("sending");
+    try {
+      await submitLead({
+        _subject: `[เว็บไซต์] ${form.interest} — ${form.name}`,
+        ประเภทฟอร์ม: "ฟอร์มติดต่อ (/contact)",
+        ชื่อ: form.name,
+        "บริษัท/สำนักงาน": form.companyName || "-",
+        เบอร์โทร: form.phone,
+        อีเมล: form.email || "-",
+        เรื่องที่สนใจ: form.interest,
+        รายละเอียดเพิ่มเติม: form.message || "-",
+      });
+      setStatus("success");
+    } catch {
+      setStatus("error");
+    }
+  }
+
+  if (status === "success") {
+    return (
+      <div className="rounded-2xl border border-line bg-card p-7">
+        <div className="flex items-start gap-3">
+          <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent-soft">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <path d="M2.5 6.5L5 9l4.5-6" stroke="var(--accent-ink)" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </span>
+          <div>
+            <h3 className="font-semibold">ได้รับข้อมูลของคุณแล้ว</h3>
+            <p className="mt-1.5 text-[15px] leading-relaxed text-muted">
+              ขอบคุณครับ ทีมงานจะติดต่อกลับภายใน 1 วันทำการ — ถ้าเรื่องด่วน ทัก LINE {company.line} ได้เลย
+            </p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -94,18 +138,36 @@ export default function ContactForm() {
         </label>
       </div>
 
+      {/* honeypot กันบอท — Formspree ทิ้ง submission ที่ field นี้ถูกกรอก */}
+      {hasFormBackend && (
+        <input type="text" name="_gotcha" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
+      )}
+
       <button
         type="submit"
-        className="mt-6 w-full rounded-lg bg-foreground px-5 py-3 font-medium text-background transition-opacity hover:opacity-85 md:w-auto"
+        disabled={status === "sending"}
+        className="mt-6 w-full rounded-lg bg-foreground px-5 py-3 font-medium text-background transition-opacity hover:opacity-85 disabled:opacity-60 md:w-auto"
       >
-        ส่งข้อมูลให้ติดต่อกลับ
+        {status === "sending" ? "กำลังส่ง..." : "ส่งข้อมูลให้ติดต่อกลับ"}
       </button>
 
-      <p className="mt-4 text-sm text-muted">
-        {sent
-          ? "ระบบเปิดโปรแกรมอีเมลพร้อมข้อมูลของคุณแล้ว — กดส่งในโปรแกรมอีเมลได้เลย เราจะติดต่อกลับภายใน 1 วันทำการ"
-          : "กดส่งแล้วระบบจะเปิดโปรแกรมอีเมลพร้อมข้อมูลที่กรอกไว้ให้ — เราติดต่อกลับภายใน 1 วันทำการ"}
-      </p>
+      {status === "error" ? (
+        <p className="mt-4 text-sm leading-relaxed text-muted" role="alert">
+          ส่งข้อมูลไม่สำเร็จ ขออภัยครับ — ลองใหม่อีกครั้ง หรือ{" "}
+          <a href={mailtoHref()} className="font-medium text-accent-ink hover:underline">
+            ส่งเป็นอีเมลแทน
+          </a>{" "}
+          / ทัก LINE {company.line}
+        </p>
+      ) : (
+        <p className="mt-4 text-sm text-muted">
+          {status === "sent-mailto"
+            ? "ระบบเปิดโปรแกรมอีเมลพร้อมข้อมูลของคุณแล้ว — กดส่งในโปรแกรมอีเมลได้เลย เราจะติดต่อกลับภายใน 1 วันทำการ"
+            : hasFormBackend
+              ? "ข้อมูลของคุณถูกส่งถึงทีมงานโดยตรง — เราติดต่อกลับภายใน 1 วันทำการ"
+              : "กดส่งแล้วระบบจะเปิดโปรแกรมอีเมลพร้อมข้อมูลที่กรอกไว้ให้ — เราติดต่อกลับภายใน 1 วันทำการ"}
+        </p>
+      )}
     </form>
   );
 }

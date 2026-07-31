@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { company } from "@/content/site";
+import { hasFormBackend, submitLead } from "@/lib/submitLead";
 
 const roles = [
   "ผู้สอบบัญชีรับอนุญาต (CPA) อิสระ",
@@ -33,14 +34,15 @@ export default function EarlyAccessForm({ productName }: { productName: string }
     edition: editions[2],
   });
   const [consent, setConsent] = useState(false);
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<
+    "idle" | "sending" | "success" | "error" | "sent-mailto"
+  >("idle");
 
   const set = (key: keyof typeof form) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => setForm({ ...form, [key]: e.target.value });
 
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
+  const mailtoHref = () => {
     const subject = `[Early Access] ${productName} — ${form.name}`;
     const body = [
       `ขอลงชื่อใช้งาน ${productName} ก่อนใคร`,
@@ -55,10 +57,54 @@ export default function EarlyAccessForm({ productName }: { productName: string }
       "",
       "ยินยอมให้เก็บข้อมูลเพื่อติดต่อกลับตามนโยบายความเป็นส่วนตัว: ยินยอม",
     ].join("\n");
-    window.location.href = `mailto:${company.email}?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(body)}`;
-    setSent(true);
+    return `mailto:${company.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  };
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!hasFormBackend) {
+      window.location.href = mailtoHref();
+      setStatus("sent-mailto");
+      return;
+    }
+    setStatus("sending");
+    try {
+      await submitLead({
+        _subject: `[Early Access] ${productName} — ${form.name}`,
+        ประเภทฟอร์ม: `Early Access — ${productName}`,
+        ชื่อ: form.name,
+        "สำนักงาน/บริษัท": form.firmName || "-",
+        บทบาท: form.role,
+        ขนาดทีม: form.teamSize,
+        เบอร์โทร: form.phone,
+        อีเมล: form.email || "-",
+        รุ่นที่สนใจ: form.edition,
+        ความยินยอม: "ยินยอมให้เก็บข้อมูลเพื่อติดต่อกลับตามนโยบายความเป็นส่วนตัว",
+      });
+      setStatus("success");
+    } catch {
+      setStatus("error");
+    }
+  }
+
+  if (status === "success") {
+    return (
+      <div className="rounded-2xl border border-line bg-card p-7">
+        <div className="flex items-start gap-3">
+          <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent-soft">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+              <path d="M2.5 6.5L5 9l4.5-6" stroke="var(--accent-ink)" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </span>
+          <div>
+            <h3 className="font-semibold">ลงชื่อเรียบร้อยแล้ว</h3>
+            <p className="mt-1.5 text-[15px] leading-relaxed text-muted">
+              ขอบคุณที่สนใจ {productName} — เราจะติดต่อนัด demo และแจ้งข่าวการเปิดใช้งานให้ก่อนใคร
+            </p>
+          </div>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -136,18 +182,36 @@ export default function EarlyAccessForm({ productName }: { productName: string }
         </span>
       </label>
 
+      {/* honeypot กันบอท — Formspree ทิ้ง submission ที่ field นี้ถูกกรอก */}
+      {hasFormBackend && (
+        <input type="text" name="_gotcha" tabIndex={-1} autoComplete="off" className="hidden" aria-hidden="true" />
+      )}
+
       <button
         type="submit"
-        className="mt-6 w-full rounded-lg bg-foreground px-5 py-3 font-medium text-background transition-opacity hover:opacity-85 md:w-auto"
+        disabled={status === "sending"}
+        className="mt-6 w-full rounded-lg bg-foreground px-5 py-3 font-medium text-background transition-opacity hover:opacity-85 disabled:opacity-60 md:w-auto"
       >
-        ลงชื่อรับสิทธิ์ก่อนใคร
+        {status === "sending" ? "กำลังส่ง..." : "ลงชื่อรับสิทธิ์ก่อนใคร"}
       </button>
 
-      <p className="mt-4 text-sm text-muted">
-        {sent
-          ? "ระบบเปิดโปรแกรมอีเมลพร้อมข้อมูลของคุณแล้ว — กดส่งในโปรแกรมอีเมลได้เลย เราจะติดต่อกลับภายใน 1 วันทำการ"
-          : "กดแล้วระบบจะเปิดโปรแกรมอีเมลพร้อมข้อมูลที่กรอกไว้ให้ — ไม่มีข้อผูกมัดใด ๆ"}
-      </p>
+      {status === "error" ? (
+        <p className="mt-4 text-sm leading-relaxed text-muted" role="alert">
+          ส่งข้อมูลไม่สำเร็จ ขออภัยครับ — ลองใหม่อีกครั้ง หรือ{" "}
+          <a href={mailtoHref()} className="font-medium text-accent-ink hover:underline">
+            ส่งเป็นอีเมลแทน
+          </a>{" "}
+          / ทัก LINE {company.line}
+        </p>
+      ) : (
+        <p className="mt-4 text-sm text-muted">
+          {status === "sent-mailto"
+            ? "ระบบเปิดโปรแกรมอีเมลพร้อมข้อมูลของคุณแล้ว — กดส่งในโปรแกรมอีเมลได้เลย เราจะติดต่อกลับภายใน 1 วันทำการ"
+            : hasFormBackend
+              ? "ข้อมูลของคุณถูกส่งถึงทีมงานโดยตรง — ไม่มีข้อผูกมัดใด ๆ"
+              : "กดแล้วระบบจะเปิดโปรแกรมอีเมลพร้อมข้อมูลที่กรอกไว้ให้ — ไม่มีข้อผูกมัดใด ๆ"}
+        </p>
+      )}
     </form>
   );
 }

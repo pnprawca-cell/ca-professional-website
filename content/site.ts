@@ -6,6 +6,15 @@
 
 export const siteUrl = "https://ca-professional.com";
 
+/**
+ * Formspree form ID สำหรับรับข้อมูลฟอร์มบนเซิร์ฟเวอร์ (ฟอร์มติดต่อ + Early Access ใช้ ID เดียวกัน
+ * แยกประเภทด้วย field "ประเภทฟอร์ม" ในข้อมูลที่ส่ง)
+ * วิธีเปิดใช้: สมัครที่ formspree.io → สร้าง form → คัดลอก ID (เช่น "mqkvabcd") มาใส่ที่นี่
+ * ถ้าเว้นว่าง: ฟอร์มจะ fallback เป็นเปิดโปรแกรมอีเมล (mailto) แบบเดิม
+ * และหน้า /legal/privacy ข้อ 2 จะแสดงข้อความให้ตรงกับกลไกที่ใช้อยู่โดยอัตโนมัติ
+ */
+export const formspreeFormId = "";
+
 export const company = {
   nameEn: "CA Professional Services Co., Ltd.",
   nameTh: "บริษัท ซีเอ โปรเฟสชั่นแนล เซอร์วิสเซส จำกัด",
