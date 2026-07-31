@@ -20,9 +20,10 @@ export const company = {
   nameTh: "บริษัท ซีเอ โปรเฟสชั่นแนล เซอร์วิสเซส จำกัด",
   shortName: "CA Professional",
   tagline: "สำนักงานสอบบัญชีที่สร้างเครื่องมือของตัวเอง",
-  // TODO: อัปเดตอีเมลบริษัทจริงก่อนเผยแพร่
-  email: "chonnikan.apitanakun@gmail.com",
-  line: "@caprofessional",
+  email: "info@ca-professional.com",
+  line: "lin.ee/yv4KFrB",
+  lineUrl: "https://lin.ee/yv4KFrB",
+  lineQrSrc: "/line-qr.png",
   address: "กรุงเทพมหานคร ประเทศไทย",
   registrationNumber: "0105569072844",
   auditorLicenseNumber: "13466",

@@ -201,7 +201,10 @@ export default function EarlyAccessForm({ productName }: { productName: string }
           <a href={mailtoHref()} className="font-medium text-accent-ink hover:underline">
             ส่งเป็นอีเมลแทน
           </a>{" "}
-          / ทัก LINE {company.line}
+          / ทัก{" "}
+          <a href={company.lineUrl} target="_blank" rel="noopener noreferrer" className="font-medium text-accent-ink hover:underline">
+            LINE {company.line}
+          </a>
         </p>
       ) : (
         <p className="mt-4 text-sm text-muted">

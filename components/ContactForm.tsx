@@ -83,7 +83,11 @@ export default function ContactForm() {
           <div>
             <h3 className="font-semibold">ได้รับข้อมูลของคุณแล้ว</h3>
             <p className="mt-1.5 text-[15px] leading-relaxed text-muted">
-              ขอบคุณครับ ทีมงานจะติดต่อกลับภายใน 1 วันทำการ — ถ้าเรื่องด่วน ทัก LINE {company.line} ได้เลย
+              ขอบคุณครับ ทีมงานจะติดต่อกลับภายใน 1 วันทำการ — ถ้าเรื่องด่วน ทัก{" "}
+              <a href={company.lineUrl} target="_blank" rel="noopener noreferrer" className="font-medium text-accent-ink hover:underline">
+                LINE {company.line}
+              </a>{" "}
+              ได้เลย
             </p>
           </div>
         </div>
@@ -157,7 +161,10 @@ export default function ContactForm() {
           <a href={mailtoHref()} className="font-medium text-accent-ink hover:underline">
             ส่งเป็นอีเมลแทน
           </a>{" "}
-          / ทัก LINE {company.line}
+          / ทัก{" "}
+          <a href={company.lineUrl} target="_blank" rel="noopener noreferrer" className="font-medium text-accent-ink hover:underline">
+            LINE {company.line}
+          </a>
         </p>
       ) : (
         <p className="mt-4 text-sm text-muted">

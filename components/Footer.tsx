@@ -48,7 +48,17 @@ export default function Footer() {
                     {company.email}
                   </a>
                 </li>
-                <li>LINE: {company.line}</li>
+                <li>
+                  LINE:{" "}
+                  <a
+                    href={company.lineUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="transition-colors hover:text-foreground"
+                  >
+                    {company.line}
+                  </a>
+                </li>
                 <li>{company.address}</li>
               </ul>
             </div>

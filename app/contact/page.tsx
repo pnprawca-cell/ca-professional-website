@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { PageHero, Section } from "@/components/ui";
 import ContactForm from "@/components/ContactForm";
@@ -19,6 +20,7 @@ const channels = [
   {
     title: "LINE Official",
     value: company.line,
+    href: company.lineUrl,
     note: "ช่องทางที่เร็วที่สุด — ทักได้เลย",
   },
 ];
@@ -45,13 +47,33 @@ export default function ContactPage() {
             <div key={c.title} className="rounded-2xl border border-line bg-card p-7">
               <h3 className="font-semibold">{c.title}</h3>
               {c.href ? (
-                <a href={c.href} className="mt-2 block break-all text-accent-ink hover:underline">
+                <a
+                  href={c.href}
+                  target={c.href.startsWith("http") ? "_blank" : undefined}
+                  rel={c.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                  className="mt-2 block break-all text-accent-ink hover:underline"
+                >
                   {c.value}
                 </a>
               ) : (
                 <p className="mt-2">{c.value}</p>
               )}
               <p className="mt-2 text-sm text-muted">{c.note}</p>
+              {c.title === "LINE Official" && (
+                <a
+                  href={company.lineUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-4 inline-block overflow-hidden rounded-xl border border-line"
+                >
+                  <Image
+                    src={company.lineQrSrc}
+                    alt="สแกนเพื่อแอด LINE"
+                    width={140}
+                    height={140}
+                  />
+                </a>
+              )}
             </div>
           ))}
         </div>

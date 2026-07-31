@@ -84,7 +84,7 @@
       `ca-professional.com` เป็น production domain หลัก (A record → 216.198.79.1), `www.ca-professional.com` ตั้ง 307 redirect มาที่ apex แล้ว — ยืนยันด้วย curl ทั้งสอง URL แล้ว
 - [x] เลขทะเบียนนิติบุคคล + เลขที่ใบอนุญาตผู้สอบบัญชี — ใส่ในโค้ดแล้ว โชว์ที่ footer ทุกหน้า (`content/site.ts`, `components/Footer.tsx`)
 - [x] เบอร์โทร — พราวให้ลบทิ้ง (31 ก.ค. 2569) ไม่ต้องมี ตัดออกจาก `content/site.ts` และหน้า /contact แล้ว
-- [ ] อัปเดตอีเมลบริษัทจริงใน `content/site.ts` — ตอนนี้ยังใช้ gmail ส่วนตัว, LINE `@caprofessional` ยืนยันเป็นของจริงแล้ว (31 ก.ค. 2569)
+- [x] อัปเดตอีเมลบริษัทจริง + LINE ใน `content/site.ts` — เปลี่ยนเป็น `info@ca-professional.com` และ LINE OA link `https://lin.ee/yv4KFrB` พร้อม QR code (`public/line-qr.png`) แล้ว (31 ก.ค. 2569)
 - [ ] สมัคร Formspree แล้วใส่ `formspreeFormId` ใน `content/site.ts` (โค้ดฟอร์ม + privacy รองรับแล้ว — ดู "หมายเหตุฟอร์ม" ด้านบน)
 - [x] เพิ่มหน้า privacy policy (PDPA) — `/legal/privacy` (22 ก.ค. 2569)
 - [x] Open Graph image + favicon — generate จากโค้ดด้วยธีมแบรนด์แล้ว (31 ก.ค. 2569: `app/opengraph-image.tsx`, `app/icon.tsx` + sitemap/robots/404/JSON-LD)
