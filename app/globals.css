@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+:root {
+  /* Claude-inspired palette: warm ivory, dark ink, terracotta accent */
+  --background: #faf9f5;
+  --surface: #f0eee6;
+  --card: #ffffff;
+  --foreground: #1f1e1d;
+  --muted: #63605b;
+  --border: #e5e2d9;
+  --accent: #c96442;
+  --accent-ink: #a34a24; /* accessible terracotta for text + button fills (≥4.5:1 on ivory, wash, white, and under white text) */
+  --accent-soft: #f5e5dd;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-line: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --font-sans: var(--font-anuphan);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-anuphan), "Anuphan", "Segoe UI", sans-serif;
+}
+
+/* Smooth scroll only when the user hasn't asked for reduced motion */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
+/* Keyboard focus: a visible terracotta-ink ring on every interactive element.
+   :focus-visible keeps it to keyboard/AT users — mouse clicks stay ringless. */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent-ink);
+  outline-offset: 2px;
+}
