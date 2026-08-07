@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { PageHero, Section, Card, CheckItem } from "@/components/ui";
 import PractiFlowPeek from "@/components/PractiFlowPeek";
-import EarlyAccessForm from "@/components/EarlyAccessForm";
+import DemoRequestForm from "@/components/DemoRequestForm";
 import {
   DeadlineArt,
   ClientRecordArt,
@@ -77,11 +77,11 @@ export default function PractiFlowPage() {
       </Section>
 
       <Section
-        title={`ลงชื่อใช้ ${p.name} ก่อนใคร`}
-        description="เราใช้ระบบนี้บริหารงานสำนักงานของเราเอง และกำลังเปิดให้สำนักงานภายนอกใช้เป็นรุ่นแรก ลงชื่อไว้ก่อนได้นัด demo 30 นาที เราจะตั้งค่าตัวอย่างจากงานจริงของสำนักงานคุณให้ดูเลย"
+        title={`เริ่มใช้ ${p.name} ที่สำนักงานคุณ`}
+        description="เราใช้ระบบนี้บริหารงานสำนักงานของเราเอง และตอนนี้เปิดให้สำนักงานภายนอกใช้แล้ว แจ้งเราแล้วเราเปิดบัญชีทดลองใช้ฟรี 30 วันให้ ครบทุกฟีเจอร์ ไม่ต้องผูกบัตร หรือนัด demo 30 นาที เราจะตั้งค่าตัวอย่างจากงานจริงของสำนักงานคุณให้ดูเลย"
         tint
       >
-        <EarlyAccessForm productName={p.name} cloudOnly />
+        <DemoRequestForm productName={p.name} cloudOnly />
       </Section>
     </>
   );

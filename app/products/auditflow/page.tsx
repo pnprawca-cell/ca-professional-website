@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { PageHero, Section, CheckItem } from "@/components/ui";
-import EarlyAccessForm from "@/components/EarlyAccessForm";
+import DemoRequestForm from "@/components/DemoRequestForm";
 import {
   PlanningShot,
   WorkingPaperShot,
@@ -189,7 +189,7 @@ export default function AuditFlowPage() {
       >
         <div className="grid gap-5 md:grid-cols-2">
           <div className="rounded-2xl border border-line bg-card p-7">
-            <h3 className="text-lg font-semibold">☁️ Cloud (Online)</h3>
+            <h3 className="text-lg font-semibold">Cloud (Online)</h3>
             <ul className="mt-4 space-y-3">
               <CheckItem>ทำงานร่วมกันทั้งทีมแบบ real-time จากทุกที่</CheckItem>
               <CheckItem>สำรองข้อมูลอัตโนมัติ อัปเดตฟีเจอร์ใหม่ทันที</CheckItem>
@@ -197,7 +197,7 @@ export default function AuditFlowPage() {
             </ul>
           </div>
           <div className="rounded-2xl border border-line bg-card p-7">
-            <h3 className="text-lg font-semibold">💻 Desktop (Offline)</h3>
+            <h3 className="text-lg font-semibold">Desktop (Offline)</h3>
             <ul className="mt-4 space-y-3">
               <CheckItem>ข้อมูลลูกค้าอยู่ในเครื่องของสำนักงาน 100% ตอบโจทย์ PDPA ตรงที่สุด</CheckItem>
               <CheckItem>ทำงานได้โดยไม่ต้องต่ออินเทอร์เน็ต</CheckItem>
@@ -208,10 +208,10 @@ export default function AuditFlowPage() {
       </Section>
 
       <Section
-        title={`ลงชื่อใช้ ${p.name} ก่อนใคร`}
-        description="เราใช้ระบบนี้กับงานตรวจของสำนักงานเราเองมาตลอดฤดูสอบบัญชี และกำลังเปิดให้สำนักงานภายนอกใช้เป็นรุ่นแรกต้นปี 2570 รับจำนวนจำกัด ผู้ลงชื่อก่อนได้นัด demo กับงานจริงก่อน และมีส่วนกำหนดฟีเจอร์รุ่นแรก"
+        title={`เริ่มใช้ ${p.name} ที่สำนักงานคุณ`}
+        description="เราใช้ระบบนี้กับงานตรวจของสำนักงานเราเองมาตลอดฤดูสอบบัญชี และตอนนี้เปิดให้สำนักงานภายนอกใช้แล้ว แจ้งเราแล้วเราเปิดบัญชีแผน Free ให้ 1 บริษัท เอกสารที่ส่งออกมี watermark หรือนัด demo 30 นาที เราจะพาดูระบบกับแฟ้มงานตรวจจริงตั้งแต่วางแผนจนออกเล่ม"
       >
-        <EarlyAccessForm productName={p.name} />
+        <DemoRequestForm productName={p.name} />
       </Section>
     </>
   );

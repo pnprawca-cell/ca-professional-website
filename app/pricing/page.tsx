@@ -99,7 +99,6 @@ export default function PricingPage() {
   return (
     <>
       <PageHero
-        eyebrow="ราคา"
         title="ราคาตรงไปตรงมา ตามขนาดงานจริง"
         description="ทุกแผนคิดตามปริมาณงาน ไม่คิดตามจำนวนผู้ใช้ ทีมกี่คนก็เข้าใช้ได้"
       />
@@ -181,11 +180,11 @@ export default function PricingPage() {
           <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:gap-12">
             <div>
               <p className="text-xl font-semibold tracking-tight text-background md:text-2xl">
-                ช่วงก่อนเปิดตัว เปิดรับ Early Adopter{" "}
-                <span className="tabular-nums">10</span> สำนักงาน
+                โปรโมชันเปิดตัว เปิดรับ Early Adopter{" "}
+                <span className="tabular-nums">10</span> สำนักงานแรก
               </p>
               <p className="mt-2 max-w-[54ch] text-[15px] leading-relaxed text-background/70">
-                AuditFlow เปิดใช้งานต้นปี 2570 · คุยกับเราตอนนี้เพื่อจองสิทธิ์และดูระบบจริง
+                AuditFlow เปิดให้ใช้งานแล้ววันนี้ · แจ้งเราแล้วเราเปิดบัญชีแผน Free ให้ หรือคุยกับเราเพื่อดูระบบจริงก่อน
               </p>
             </div>
             <CTAButton href="/contact" variant="accent">

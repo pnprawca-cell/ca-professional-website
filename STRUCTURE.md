@@ -4,7 +4,7 @@
 1. ให้ทุกคนรู้จักบริษัท (brand awareness)
 2. ขายงานสอบบัญชี
 3. ขาย AuditFlow (Audit Platform) — Online + Offline
-4. ขาย PractiFlow (Practice Management) — Online + Offline
+4. ขาย PractiFlow (Practice Management) — Cloud (Online) อย่างเดียว ไม่มีรุ่น Offline
 
 ## กลยุทธ์ domain: เว็บเดียว domain เดียว ✅
 ใช้ domain เดียว แยกด้วย path เช่น `caprofessional.co.th`:
@@ -27,7 +27,7 @@
 /                       หน้าแรก — 3 เสาหลัก + ทำไมต้องเรา + CTA
 /services/audit         บริการสอบบัญชี (บริการ, ขั้นตอน, เหมาะกับใคร)
 /products/auditflow     AuditFlow — Audit Platform (ฟีเจอร์, Online/Offline)
-/products/practiflow    PractiFlow — Practice Management (ฟีเจอร์, Online/Offline)
+/products/practiflow    PractiFlow — Practice Management (ฟีเจอร์, รุ่น Cloud อย่างเดียว)
 /pricing                แนวทางราคา 3 กลุ่ม
 /blog                   บทความบัญชี/ภาษี เพื่อ SEO (เนื้อหาอยู่ที่ content/blog.ts)
 /blog/[slug]            หน้าอ่านบทความรายชิ้น
@@ -39,7 +39,7 @@
 ```
 
 ### หมายเหตุฟอร์ม
-ฟอร์มหน้า /contact และฟอร์ม Early Access (หน้า /products/auditflow) ต่อ Formspree แล้ว (31 ก.ค. 2569)
+ฟอร์มหน้า /contact และฟอร์มขอนัด demo (ท้ายหน้า product ทั้งสอง) ต่อ Formspree แล้ว (31 ก.ค. 2569)
 แต่จะทำงานเมื่อใส่ `formspreeFormId` ใน `content/site.ts` — ระหว่างที่ยังว่าง ฟอร์มจะ fallback
 เป็นเปิดโปรแกรมอีเมล (mailto) แบบเดิม และหน้า /legal/privacy ข้อ 2 สลับข้อความตามกลไกที่ใช้อยู่อัตโนมัติ
 (logic กลางอยู่ที่ `lib/submitLead.ts` — ฟอร์มทั้งสองใช้ form ID เดียวกัน แยกประเภทด้วย field "ประเภทฟอร์ม")
@@ -47,10 +47,13 @@
 วิธีเปิดใช้: สมัคร formspree.io (ฟรี 50 submissions/เดือน) → New Form → ตั้งอีเมลรับเป็นอีเมลบริษัท
 → คัดลอก form ID (ตัวท้ายของ endpoint เช่น `mqkvabcd`) มาใส่ `formspreeFormId` ใน `content/site.ts`
 
-### ฟอร์ม Early Access (รองรับ Gate 0 pre-sell ของ Audit Platform Phase 2)
-- component: `components/EarlyAccessForm.tsx` (รับ prop `productName`)
+### ฟอร์มขอนัด demo (ท้ายหน้า product)
+- component: `components/DemoRequestForm.tsx` (รับ prop `productName` และ `cloudOnly`)
+  - `cloudOnly` = ผลิตภัณฑ์ที่ไม่มีรุ่น Offline (ตอนนี้คือ PractiFlow เท่านั้น) ฟอร์มจะไม่ถามว่าสนใจรุ่นไหน
 - ฝังท้ายหน้า /products/auditflow และ /products/practiflow (31 ก.ค. 2569) พร้อม consent checkbox อ้างหน้า privacy
-- เป้าหมาย: เก็บรายชื่อ CPA/สำนักงานที่สนใจก่อนเปิดขายต้นปี 2570 (ดู docs/Audit_Platform_Phase2_Commercial_Plan.md ในโปรเจกต์ Audit-platform)
+- เป้าหมาย: รับคำขอนัด demo จาก CPA/สำนักงาน — **AuditFlow และ PractiFlow เปิดขายแล้วทั้งคู่**
+  ไม่มีสถานะ pre-release/waitlist ในเว็บอีกแล้ว ถ้าจะเขียนคำโฆษณาใหม่ ห้ามย้อนไปพูดว่าตัวไหน "ยังไม่เปิด"
+  (ทางลองใช้ก่อนซื้อ: AuditFlow = แผน Free 1 บริษัท เอกสารมี watermark · PractiFlow = ทดลองฟรี 30 วัน ไม่ต้องผูกบัตร)
 
 ### หน้าที่ควรเพิ่มภายหลัง
 - `/products/*/changelog` — บันทึกอัปเดต product

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { company } from "@/content/site";
 import { hasFormBackend, submitLead } from "@/lib/submitLead";
@@ -21,13 +21,16 @@ const editions = [
 ];
 
 const inputClass =
-  "w-full rounded-lg border border-line bg-card px-4 py-2.5 text-[15px] outline-none transition-colors focus:border-accent";
+  "w-full rounded-lg border border-line bg-card px-4 py-2.5 text-[15px] outline-none transition-colors placeholder:text-muted focus:border-accent";
 
 /**
+ * ฟอร์มขอนัด demo ท้ายหน้า product — ทั้ง AuditFlow และ PractiFlow เปิดขายแล้ว
+ * ฟอร์มนี้จึงเป็นการขอให้ติดต่อกลับเพื่อนัดดูระบบ ไม่ใช่การลงชื่อรอคิว
+ *
  * cloudOnly: ผลิตภัณฑ์ที่ขายเฉพาะรุ่น Online (PractiFlow) ไม่ต้องถามว่าสนใจรุ่นไหน
  * แต่ยังส่งค่ารุ่นไปกับลีดเพื่อให้ทีมขายอ่านได้เหมือนกันทุกฟอร์ม
  */
-export default function EarlyAccessForm({
+export default function DemoRequestForm({
   productName,
   cloudOnly = false,
 }: {
@@ -47,15 +50,27 @@ export default function EarlyAccessForm({
   const [status, setStatus] = useState<
     "idle" | "sending" | "success" | "error" | "sent-mailto"
   >("idle");
+  const successHeadingRef = useRef<HTMLHeadingElement>(null);
+  const isSuccess = status === "success";
+
+  /* บล็อกสำเร็จมาแทนที่ทั้งฟอร์ม ปุ่มส่งที่ถือโฟกัสอยู่จึงหายไปและโฟกัสตกไปที่ body
+     ย้ายโฟกัสมาที่หัวข้อเพื่อให้ screen reader อ่านผลลัพธ์ต่อจากจุดเดิม */
+  useEffect(() => {
+    if (isSuccess) successHeadingRef.current?.focus();
+  }, [isSuccess]);
 
   const set = (key: keyof typeof form) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => setForm({ ...form, [key]: e.target.value });
 
+  const leadSubject = `[นัด Demo] ${productName} — ${form.name}`;
+  const leadType = `นัด Demo — ${productName}`;
+  const leadOpeningLine = `ขอนัด demo ${productName}`;
+
   const mailtoHref = () => {
-    const subject = `[Early Access] ${productName} — ${form.name}`;
+    const subject = leadSubject;
     const body = [
-      `ขอลงชื่อใช้งาน ${productName} ก่อนใคร`,
+      leadOpeningLine,
       "",
       `ชื่อ: ${form.name}`,
       `สำนักงาน/บริษัท: ${form.firmName || "-"}`,
@@ -80,8 +95,8 @@ export default function EarlyAccessForm({
     setStatus("sending");
     try {
       await submitLead({
-        _subject: `[Early Access] ${productName} — ${form.name}`,
-        ประเภทฟอร์ม: `Early Access — ${productName}`,
+        _subject: leadSubject,
+        ประเภทฟอร์ม: leadType,
         ชื่อ: form.name,
         "สำนักงาน/บริษัท": form.firmName || "-",
         บทบาท: form.role,
@@ -97,9 +112,9 @@ export default function EarlyAccessForm({
     }
   }
 
-  if (status === "success") {
+  if (isSuccess) {
     return (
-      <div className="rounded-2xl border border-line bg-card p-7">
+      <div role="status" className="rounded-2xl border border-line bg-card p-7">
         <div className="flex items-start gap-3">
           <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent-soft">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
@@ -107,9 +122,11 @@ export default function EarlyAccessForm({
             </svg>
           </span>
           <div>
-            <h3 className="font-semibold">ลงชื่อเรียบร้อยแล้ว</h3>
+            <h3 ref={successHeadingRef} tabIndex={-1} className="font-semibold">
+              ได้รับข้อมูลของคุณแล้ว
+            </h3>
             <p className="mt-1.5 text-[15px] leading-relaxed text-muted">
-              ขอบคุณที่สนใจ {productName} — เราจะติดต่อนัด demo และแจ้งข่าวการเปิดใช้งานให้ก่อนใคร
+              {`ขอบคุณที่สนใจ ${productName} — ทีมงานจะติดต่อกลับภายใน 1 วันทำการ เพื่อนัดวันเวลา demo`}
             </p>
           </div>
         </div>
@@ -185,7 +202,7 @@ export default function EarlyAccessForm({
           className="mt-1 h-4 w-4 accent-[var(--accent-ink)]"
         />
         <span className="text-sm leading-relaxed text-muted">
-          ยินยอมให้ {company.shortName} เก็บข้อมูลข้างต้นเพื่อติดต่อกลับและแจ้งข่าวการเปิดใช้งาน{" "}
+          ยินยอมให้ {company.shortName} เก็บข้อมูลข้างต้นเพื่อติดต่อกลับเรื่อง{" "}
           {productName} ตาม{" "}
           <Link href="/legal/privacy" className="font-medium text-accent-ink hover:underline">
             นโยบายความเป็นส่วนตัว
@@ -204,7 +221,7 @@ export default function EarlyAccessForm({
         disabled={status === "sending"}
         className="mt-6 w-full rounded-lg bg-foreground px-5 py-3 font-medium text-background transition-opacity hover:opacity-85 disabled:opacity-60 md:w-auto"
       >
-        {status === "sending" ? "กำลังส่ง..." : "ลงชื่อรับสิทธิ์ก่อนใคร"}
+        {status === "sending" ? "กำลังส่ง..." : "ส่งข้อมูลเพื่อนัด demo"}
       </button>
 
       {status === "error" ? (
