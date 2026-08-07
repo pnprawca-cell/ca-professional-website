@@ -32,14 +32,18 @@ function MockWindow({
   return (
     <div role="img" aria-label={label} className="rounded-3xl bg-surface p-3 sm:p-4">
       <div className="overflow-hidden rounded-2xl border border-line bg-card">
-        <div className="flex items-center gap-2 border-b border-line bg-surface/70 px-4 py-2.5">
+        {/* flex-wrap: badge บางตัวยาว (เช่น "ต่อจากยอดหลังปรับปรุง") และมี whitespace-nowrap
+            จึงกลายเป็น min-content ของทั้งหน้าต่าง — 281px เกินคอลัมน์ 280px ที่ viewport 320px
+            แล้วดันทั้งหน้าให้เลื่อนแนวนอน ปล่อยให้ตกบรรทัดได้แทนการตัดคำ
+            จอกว้างมีที่พอในบรรทัดเดียวอยู่แล้ว หน้าตาจึงไม่เปลี่ยน */}
+        <div className="flex flex-wrap items-center gap-2 border-b border-line bg-surface/70 px-4 py-2.5">
           <span className="flex gap-1.5" aria-hidden="true">
             <span className="h-2.5 w-2.5 rounded-full bg-line" />
             <span className="h-2.5 w-2.5 rounded-full bg-line" />
             <span className="h-2.5 w-2.5 rounded-full bg-line" />
           </span>
           <span className="ml-1.5 text-[13px] font-medium text-muted">
-            AuditFlow <span className="text-line">·</span> {screen}
+            AuditFlow · {screen}
           </span>
           <span className="ml-auto whitespace-nowrap rounded-md bg-accent-soft px-2 py-0.5 text-[11px] font-semibold text-accent-ink">
             {badge}
@@ -286,7 +290,7 @@ export function ConfirmationShot() {
               </td>
               <td
                 className={`whitespace-nowrap py-2 pl-2 pr-4 text-right tabular-nums ${
-                  c.diff === "—" ? "text-line" : "font-medium text-accent-ink"
+                  c.diff === "—" ? "text-muted" : "font-medium text-accent-ink"
                 }`}
               >
                 {c.diff}
@@ -423,7 +427,7 @@ export function CalTaxShot() {
           {taxBands.map((b) => (
             <tr key={b.label} className="border-b border-line/70 text-muted">
               <td className="py-1.5 pl-4 pr-2">
-                {b.label} <span className="text-line">·</span> {b.rate}
+                {b.label} · {b.rate}
               </td>
               <td className="py-1.5 pl-2 pr-4 text-right">{b.value}</td>
             </tr>

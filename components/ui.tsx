@@ -12,11 +12,12 @@ export function PageHero({
 }) {
   return (
     <section className="mx-auto max-w-6xl px-5 pb-4 pt-16 md:pt-24">
-      {eyebrow && (
-        <p className="mb-3 text-sm font-semibold uppercase tracking-widest text-accent-ink">
-          {eyebrow}
-        </p>
-      )}
+      {/* Eyebrow: น้ำหนัก 600 + สี terracotta พอแล้วสำหรับ kicker เหนือ h1
+          ห้ามใส่ uppercase/tracking-widest กลับมา — ภาษาหลักของเว็บคือไทย
+          uppercase ไม่มีผลกับอักษรไทยเลย (dead CSS บนเกือบทุกหน้า) ส่วน
+          letter-spacing 0.1em ไปลดการเกาะกลุ่มของตัวอักษร ซึ่งเป็นสัญญาณเดียว
+          ที่คนไทยใช้แบ่งคำเพราะเราเขียนติดกันไม่เว้นวรรค อ่านยากขึ้นจริง */}
+      {eyebrow && <p className="mb-3 text-sm font-semibold text-accent-ink">{eyebrow}</p>}
       <h1 className="max-w-3xl text-balance text-4xl font-semibold leading-tight tracking-tight md:text-5xl">
         {title}
       </h1>
@@ -91,7 +92,7 @@ export function CTAButton({
     variant === "primary"
       ? "bg-foreground text-background hover:opacity-85"
       : variant === "accent"
-        ? "bg-accent-ink text-white hover:opacity-85"
+        ? "bg-accent-ink text-card hover:opacity-85"
         : "border border-line bg-card hover:bg-surface";
   return (
     <Link
@@ -123,7 +124,7 @@ export function CTABanner({
         <p className="mx-auto mt-3 max-w-xl leading-relaxed text-background/70">{description}</p>
         <Link
           href={buttonHref}
-          className="mt-8 inline-flex items-center justify-center rounded-lg bg-accent-ink px-6 py-3 font-medium text-white transition-opacity hover:opacity-85"
+          className="mt-8 inline-flex items-center justify-center rounded-lg bg-accent-ink px-6 py-3 font-medium text-card transition-opacity hover:opacity-85"
         >
           {buttonLabel}
         </Link>

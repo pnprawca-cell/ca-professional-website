@@ -29,7 +29,6 @@ export default function ContactPage() {
   return (
     <>
       <PageHero
-        eyebrow="ติดต่อเรา"
         title="คุยกันก่อน ไม่มีค่าใช้จ่าย"
         description="ไม่ว่าจะขอใบเสนอราคางานสอบบัญชี นัด demo ผลิตภัณฑ์ หรือถามคำถามทั่วไป — เลือกช่องทางที่สะดวกได้เลย"
       />

@@ -2,13 +2,6 @@ import type { Metadata } from "next";
 import { PageHero, Section, CheckItem, CTABanner } from "@/components/ui";
 import { AuditServiceCard } from "@/components/AuditServiceCard";
 
-const stats = [
-  { value: "10+", label: "ปีประสบการณ์ตรวจสอบ" },
-  { value: "Big 4", label: "เส้นทางอาชีพผู้สอบ" },
-  { value: "7", label: "กลุ่มอุตสาหกรรมที่ชำนาญ" },
-  { value: "CPA", label: "ผู้สอบบัญชีรับอนุญาต" },
-];
-
 const deliverables = [
   "รายงานของผู้สอบบัญชีรับอนุญาต (CPA)",
   "งบการเงินฉบับสมบูรณ์ พร้อมยื่นกรมพัฒนาธุรกิจการค้า (DBD)",
@@ -45,7 +38,6 @@ export default function AuditServicePage() {
   return (
     <>
       <PageHero
-        eyebrow="บริการสอบบัญชี"
         title={
           <>
             ตรวจสอบงบการเงิน
@@ -60,16 +52,26 @@ export default function AuditServicePage() {
         title="บริการของเรา"
         description="ตรวจสอบงบการเงินประจำปีโดยผู้สอบบัญชีรับอนุญาตที่มีประสบการณ์จริง"
       >
-        <div className="grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-4">
-          {stats.map((s) => (
-            <div key={s.label} className="bg-card p-5 text-center md:p-6">
-              <div className="text-3xl font-semibold tracking-tight md:text-4xl">{s.value}</div>
-              <div className="mt-1.5 text-sm leading-snug text-muted">{s.label}</div>
-            </div>
-          ))}
+        {/* ประวัติผู้สอบ — เดิมเป็นตาราง 4 ช่อง "ตัวเลขใหญ่ + ป้ายเล็ก" ซึ่งบอกสายตาว่า
+            ทุกช่องคือค่าที่วัดได้ แต่ Big 4 คือเส้นทางอาชีพ และ CPA คือใบอนุญาต ไม่ใช่จำนวน
+            จึงเปลี่ยนเป็นคุณวุฒินำหนึ่งบรรทัด + ประโยคขยายที่เหลือ ลำดับชั้นมาจากน้ำหนัก
+            ตัวอักษรกับหมึกเข้ม ไม่ใช่จากการทำกล่องเท่ากันสี่กล่อง (ไม่มี accent ในบล็อกนี้
+            เพราะ terracotta ถูกใช้แล้วที่ป้ายอุตสาหกรรมและ CheckItem ที่อยู่ถัดลงไป) */}
+        <div className="border-y border-line py-6 md:grid md:grid-cols-[auto_minmax(0,1fr)] md:items-baseline md:gap-x-10 md:py-7">
+          <p className="text-xl font-semibold tracking-tight md:text-2xl">
+            ผู้สอบบัญชีรับอนุญาต (CPA)
+          </p>
+          <p className="mt-2.5 max-w-2xl text-[15px] leading-relaxed text-muted md:mt-0">
+            ประสบการณ์งานตรวจสอบ{" "}
+            <span className="font-medium text-foreground">มากกว่า 10 ปี</span>{" "}
+            ผ่านเส้นทางอาชีพผู้สอบในสำนักงานสอบบัญชี{" "}
+            <span className="font-medium text-foreground">Big 4</span>{" "}
+            และชำนาญงานตรวจใน{" "}
+            <span className="font-medium text-foreground">7 กลุ่มอุตสาหกรรม</span>
+          </p>
         </div>
 
-        <div className="mt-6 grid gap-5 md:mt-8 md:grid-cols-2 md:items-start">
+        <div className="mt-8 grid gap-5 md:mt-10 md:grid-cols-2 md:items-start">
           <AuditServiceCard />
           <div className="rounded-2xl border border-line bg-card p-6 md:p-8">
             <h3 className="text-lg font-semibold tracking-tight md:text-xl">สิ่งที่คุณจะได้รับ</h3>

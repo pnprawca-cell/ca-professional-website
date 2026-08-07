@@ -53,7 +53,8 @@ typography:
     fontSize: "0.875rem"
     fontWeight: 600
     lineHeight: 1.4
-    letterSpacing: "0.1em"
+    letterSpacing: "normal"
+    textTransform: "none"
 rounded:
   sm: "8px"
   md: "16px"
@@ -152,7 +153,7 @@ A warm, low-chroma neutral field carrying one saturated terracotta — the close
 - **Title** (600, 1.125rem, line-height 1.4): Card H3 and small block headings.
 - **Body** (400, 0.9375–1.125rem, line-height 1.625): Paragraphs and supporting copy. Cap measure at 65–75ch (`max-w-2xl` / `max-w-3xl`). Use the larger 1.125rem for lead paragraphs under a hero, 0.9375rem for in-card and dense copy.
 - **Label** (500, 0.875rem): Nav links, form field labels, button text.
-- **Eyebrow** (600, 0.875rem, tracking 0.1em, UPPERCASE, terracotta): The single kicker above a page hero — see the Don'ts.
+- **Eyebrow** (600, 0.875rem, tracking normal, as-written case, terracotta): The single kicker above a page hero. Weight and the terracotta carry it — **no `uppercase`, no letterspacing**. Thai is the primary language: `text-transform` has no effect on Thai script at all, and 0.1em tracking works against the character clustering Thai readers use to find word boundaries in text written without spaces. The step is deliberately script-neutral so a hero does not change typographic form when the same component renders the EN locale. See the Don'ts — most pages should carry no eyebrow at all.
 
 ### Named Rules
 **The One-Voice Rule.** Never introduce a second font family to create contrast. If a heading needs more presence, add weight or size, not a serif. The single-family discipline is the voice.
@@ -228,7 +229,7 @@ A `rounded-full` Pure Card segmented control with a Dune Line border and a Near-
 - **Don't** make it look like a เว็บราชการ / old-Thai-accounting site: navy blocks, dense wall-to-wall text, stock handshake/suit photography. (PRODUCT.md anti-reference.)
 - **Don't** drift toward the interchangeable SaaS landing page: purple-blue gradients, glowing hero, icon-card grids of identical tiles. (PRODUCT.md anti-reference.)
 - **Don't** over-decorate — too many colors, badges, and labels until legibility drops and it stops reading as professional. (PRODUCT.md anti-reference.)
-- **Don't** let the terracotta uppercase eyebrow become per-section scaffolding. One deliberate kicker on a hero is voice; the same tracked all-caps label above every section is AI grammar — choose a different cadence for lower sections.
+- **Don't** let the terracotta eyebrow become scaffolding. One deliberate kicker is voice; the same small terracotta label above every section — or above every hero — is AI grammar. Choose a different cadence for lower sections, and drop the eyebrow entirely whenever it only restates the `<h1>` beneath it (a route label like "ราคา" above "ราคาตรงไปตรงมา…" is pure duplication). It earns its place only when it carries information the heading does not: a product's category above its tagline, or a page whose heading deliberately answers something other than what the nav link promised.
 - **Don't** use gradient text (`background-clip: text`), colored side-stripe borders (`border-left`>1px as an accent), or decorative glassmorphism — all forbidden.
 - **Don't** add a resting drop-shadow to cards or surfaces; shadow is a hover response only (The Flat-By-Default Rule).
 - **Don't** introduce a second font family; if something needs more presence, add weight or size (The One-Voice Rule).

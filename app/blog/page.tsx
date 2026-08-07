@@ -21,7 +21,6 @@ export default function BlogIndexPage() {
   return (
     <>
       <PageHero
-        eyebrow="บทความ"
         title="ความรู้จากหน้างานจริง"
         description="เราเขียนจากประเด็นที่เจอในงานสอบบัญชีและงานสำนักงานทุกสัปดาห์ — เพื่อเจ้าของธุรกิจและเพื่อนร่วมวิชาชีพ"
       />

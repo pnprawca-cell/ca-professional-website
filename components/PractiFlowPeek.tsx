@@ -59,7 +59,7 @@ export default function PractiFlowPeek() {
             <span className="h-2.5 w-2.5 rounded-full bg-line" />
           </span>
           <span className="ml-1.5 text-[13px] font-medium text-muted">
-            PractiFlow <span className="text-line">·</span> งานและ deadline
+            PractiFlow · งานและ deadline
           </span>
           <span className="ml-auto rounded-md bg-accent-soft px-2 py-0.5 text-[11px] font-semibold text-accent-ink">
             ส.ค. 2569

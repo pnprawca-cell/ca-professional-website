@@ -20,7 +20,7 @@ export default function ProductPeek() {
   return (
     <div
       role="img"
-      aria-label="ตัวอย่างหน้าจอ AuditFlow — กระดาษทำการ Lead Schedule ของสินทรัพย์หมุนเวียน แสดงยอดยกมา รายการปรับปรุง และยอดคงเหลือที่ผูกกับ Trial Balance อัตโนมัติ"
+      aria-label="ตัวอย่างหน้าจอ AuditFlow — กระดาษทำการ Lead Schedule ของสินทรัพย์หมุนเวียน แสดงยอดคงเหลือรายบัญชีพร้อมรายการปรับปรุงที่ผูกกับ Trial Balance อัตโนมัติ"
       className="rounded-3xl bg-surface p-3 sm:p-4"
     >
       <div className="overflow-hidden rounded-2xl border border-line bg-card">
@@ -32,7 +32,7 @@ export default function ProductPeek() {
             <span className="h-2.5 w-2.5 rounded-full bg-line" />
           </span>
           <span className="ml-1.5 text-[13px] font-medium text-muted">
-            AuditFlow <span className="text-line">·</span> กระดาษทำการ
+            AuditFlow · กระดาษทำการ
           </span>
           <span className="ml-auto rounded-md bg-accent-soft px-2 py-0.5 text-[11px] font-semibold text-accent-ink">
             Online
@@ -55,7 +55,13 @@ export default function ProductPeek() {
           <thead>
             <tr className="border-y border-line bg-surface/60 text-[11px] text-muted">
               <th className="py-1.5 pl-4 pr-2 text-left font-medium">บัญชี</th>
-              <th className="px-2 py-1.5 text-right font-medium">ยอดยกมา</th>
+              {/* ยอดยกมา ถูกซ่อนบนจอที่แคบกว่า 375px: ตัวเลขสี่หลักคอมมาไม่ตัดบรรทัด
+                  ทำให้ min-content ของตารางอยู่ที่ 297px (mock 323px) ซึ่งเกินคอลัมน์
+                  280px ที่ viewport 320px แล้วดันทั้งหน้าให้เลื่อนแนวนอน
+                  ที่ 375px ขึ้นไปมีที่พอ จึงแสดงครบทั้งสี่คอลัมน์ตามเดิม */}
+              <th className="hidden px-2 py-1.5 text-right font-medium min-[375px]:table-cell">
+                ยอดยกมา
+              </th>
               <th className="px-2 py-1.5 text-right font-medium">ปรับปรุง</th>
               <th className="py-1.5 pl-2 pr-4 text-right font-medium">คงเหลือ</th>
             </tr>
@@ -70,8 +76,10 @@ export default function ProductPeek() {
                   <span className="text-muted">{r.code}</span>{" "}
                   <span className="text-foreground">{r.name}</span>
                 </td>
-                <td className="px-2 py-2 text-right text-muted">{r.open}</td>
-                <td className={`px-2 py-2 text-right ${r.adj === "—" ? "text-line" : "font-medium text-accent-ink"}`}>
+                <td className="hidden px-2 py-2 text-right text-muted min-[375px]:table-cell">
+                  {r.open}
+                </td>
+                <td className={`px-2 py-2 text-right ${r.adj === "—" ? "text-muted" : "font-medium text-accent-ink"}`}>
                   {r.adj}
                 </td>
                 <td className="py-2 pl-2 pr-4 text-right font-medium text-foreground">{r.close}</td>
@@ -79,7 +87,9 @@ export default function ProductPeek() {
             ))}
             <tr className="bg-surface/60 text-[12px] font-semibold">
               <td className="py-2 pl-4 pr-2">รวมสินทรัพย์หมุนเวียน</td>
-              <td className="px-2 py-2 text-right text-muted">7,627,550</td>
+              <td className="hidden px-2 py-2 text-right text-muted min-[375px]:table-cell">
+                7,627,550
+              </td>
               <td className="px-2 py-2 text-right text-accent-ink">(120,000)</td>
               <td className="py-2 pl-2 pr-4 text-right">7,507,550</td>
             </tr>
