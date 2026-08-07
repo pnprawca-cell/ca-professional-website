@@ -6,7 +6,7 @@ import { faqGroups, type FaqItem } from "@/content/faq";
 export const metadata: Metadata = {
   title: "คำถามที่พบบ่อย",
   description:
-    "รวมคำตอบเรื่องค่าสอบบัญชี เอกสารที่ต้องเตรียม และการเลือกใช้ AuditFlow / PractiFlow ทั้งรุ่น Cloud และ Desktop",
+    "รวมคำตอบเรื่องค่าสอบบัญชี เอกสารที่ต้องเตรียม และการเลือกใช้ AuditFlow / PractiFlow",
 };
 
 /** FAQPage structured data — รวมทุกคำถามทั้งสองกลุ่ม */

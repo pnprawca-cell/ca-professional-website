@@ -25,19 +25,19 @@ export const metadata: Metadata = {
 const steps = [
   {
     title: "1. ทำความเข้าใจธุรกิจ",
-    detail: "คุยกับผู้บริหารและทีมบัญชี ประเมินความเสี่ยง วางแผนการตรวจสอบและกำหนด Materiality",
+    detail: "ประเมินความเสี่ยง วางแผนการตรวจ และกำหนด Materiality",
   },
   {
     title: "2. ตรวจสอบภาคสนาม",
-    detail: "ตรวจสอบรายการสำคัญ ยืนยันยอดกับบุคคลภายนอก จัดทำกระดาษทำการครบทุกหมวด",
+    detail: "ตรวจรายการสำคัญ ยืนยันยอดกับบุคคลภายนอก ทำกระดาษทำการ",
   },
   {
     title: "3. สรุปประเด็นและปรับปรุง",
-    detail: "แจ้งประเด็นที่พบพร้อมรายการปรับปรุง อธิบายผลกระทบทางบัญชีและภาษีให้เข้าใจง่าย",
+    detail: "แจ้งประเด็นที่พบและรายการปรับปรุง อธิบายผลกระทบให้เข้าใจง่าย",
   },
   {
     title: "4. ออกรายงานและยื่นงบ",
-    detail: "ออกรายงานผู้สอบบัญชี จัดทำงบการเงินฉบับยื่น DBD พร้อมช่วยดูแลจนยื่นเสร็จ",
+    detail: "ออกรายงานผู้สอบบัญชี และจัดทำงบการเงินฉบับยื่น DBD",
   },
 ];
 
@@ -87,7 +87,7 @@ export default function AuditServicePage() {
         description="กระบวนการชัดเจน รู้ตั้งแต่ต้นว่าแต่ละช่วงจะเกิดอะไรขึ้น"
         tint
       >
-        <div className="grid gap-5 md:grid-cols-2">
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((s) => (
             <div key={s.title} className="rounded-2xl border border-line bg-card p-6">
               <h3 className="font-semibold">{s.title}</h3>

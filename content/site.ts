@@ -35,7 +35,7 @@ export const products = {
     category: "Audit Platform",
     tagline: "แพลตฟอร์มงานสอบบัญชีครบวงจร สำหรับผู้สอบบัญชีไทย",
     description:
-      "จัดการงานตรวจสอบตั้งแต่วางแผนจนออกหน้ารายงาน — กระดาษทำการ, Lead Schedule, Materiality, Cal Tax และงบการเงิน NPAE ในที่เดียว",
+      "จัดการงานตรวจสอบตั้งแต่วางแผนจนออกหน้ารายงาน รวมกระดาษทำการ Lead Schedule Materiality Cal Tax และงบการเงิน NPAE ไว้ในที่เดียว",
     // TODO: เปลี่ยนเป็น URL ระบบจริงเมื่อเปิดใช้งาน
     appUrl: "https://app.ca-professional.com/auditflow",
   },
@@ -44,7 +44,7 @@ export const products = {
     category: "Practice Management",
     tagline: "ระบบบริหารสำนักงานบัญชีและสอบบัญชี",
     description:
-      "ติดตามงานทุกลูกค้า ทุก deadline ทุกใบแจ้งหนี้ — เห็นภาพรวมทั้งสำนักงานในหน้าจอเดียว",
+      "ติดตามงานทุกลูกค้า ทุก deadline ทุกใบแจ้งหนี้ เห็นภาพรวมทั้งสำนักงานในหน้าจอเดียว",
     // TODO: เปลี่ยนเป็น URL ระบบจริงเมื่อเปิดใช้งาน
     appUrl: "https://app.ca-professional.com/practiflow",
   },

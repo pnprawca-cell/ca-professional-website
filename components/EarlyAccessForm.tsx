@@ -23,7 +23,17 @@ const editions = [
 const inputClass =
   "w-full rounded-lg border border-line bg-card px-4 py-2.5 text-[15px] outline-none transition-colors focus:border-accent";
 
-export default function EarlyAccessForm({ productName }: { productName: string }) {
+/**
+ * cloudOnly: ผลิตภัณฑ์ที่ขายเฉพาะรุ่น Online (PractiFlow) ไม่ต้องถามว่าสนใจรุ่นไหน
+ * แต่ยังส่งค่ารุ่นไปกับลีดเพื่อให้ทีมขายอ่านได้เหมือนกันทุกฟอร์ม
+ */
+export default function EarlyAccessForm({
+  productName,
+  cloudOnly = false,
+}: {
+  productName: string;
+  cloudOnly?: boolean;
+}) {
   const [form, setForm] = useState({
     name: "",
     firmName: "",
@@ -31,7 +41,7 @@ export default function EarlyAccessForm({ productName }: { productName: string }
     teamSize: teamSizes[0],
     phone: "",
     email: "",
-    edition: editions[2],
+    edition: cloudOnly ? "Cloud (Online)" : editions[2],
   });
   const [consent, setConsent] = useState(false);
   const [status, setStatus] = useState<
@@ -152,16 +162,18 @@ export default function EarlyAccessForm({ productName }: { productName: string }
           <span className="mb-1.5 block text-sm font-medium">อีเมล</span>
           <input type="email" value={form.email} onChange={set("email")} className={inputClass} placeholder="you@example.com" />
         </label>
-        <label className="block md:col-span-2">
-          <span className="mb-1.5 block text-sm font-medium">รุ่นที่สนใจ</span>
-          <select value={form.edition} onChange={set("edition")} className={inputClass}>
-            {editions.map((item) => (
-              <option key={item} value={item}>
-                {item}
-              </option>
-            ))}
-          </select>
-        </label>
+        {!cloudOnly && (
+          <label className="block md:col-span-2">
+            <span className="mb-1.5 block text-sm font-medium">รุ่นที่สนใจ</span>
+            <select value={form.edition} onChange={set("edition")} className={inputClass}>
+              {editions.map((item) => (
+                <option key={item} value={item}>
+                  {item}
+                </option>
+              ))}
+            </select>
+          </label>
+        )}
       </div>
 
       <label className="mt-5 flex items-start gap-3">
@@ -206,15 +218,13 @@ export default function EarlyAccessForm({ productName }: { productName: string }
             LINE {company.line}
           </a>
         </p>
-      ) : (
-        <p className="mt-4 text-sm text-muted">
-          {status === "sent-mailto"
-            ? "ระบบเปิดโปรแกรมอีเมลพร้อมข้อมูลของคุณแล้ว — กดส่งในโปรแกรมอีเมลได้เลย เราจะติดต่อกลับภายใน 1 วันทำการ"
-            : hasFormBackend
-              ? "ข้อมูลของคุณถูกส่งถึงทีมงานโดยตรง — ไม่มีข้อผูกมัดใด ๆ"
-              : "กดแล้วระบบจะเปิดโปรแกรมอีเมลพร้อมข้อมูลที่กรอกไว้ให้ — ไม่มีข้อผูกมัดใด ๆ"}
+      ) : status === "sent-mailto" ? (
+        /* ยังต้องบอกผู้กรอกว่าเกิดอะไรขึ้นหลังกดส่ง — ข้อความบอกกลไกตอนยังไม่กดถูกตัดออกแล้ว */
+        <p className="mt-4 text-sm leading-relaxed text-muted">
+          ระบบเปิดโปรแกรมอีเมลพร้อมข้อมูลของคุณแล้ว กดส่งในโปรแกรมอีเมลได้เลย
+          เราจะติดต่อกลับภายใน 1 วันทำการ
         </p>
-      )}
+      ) : null}
     </form>
   );
 }

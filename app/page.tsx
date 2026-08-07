@@ -25,7 +25,7 @@ export default function Home() {
             </h1>
             <p className="mt-5 max-w-lg text-lg leading-relaxed text-muted">
               เราเป็นสำนักงานสอบบัญชีที่ใช้เทคโนโลยีของตัวเองในงานจริงทุกวัน
-              แล้วเปิดให้สำนักงานอื่นใช้ด้วย — ทั้งแบบ Online และ Offline
+              แล้วเปิดให้สำนักงานอื่นใช้ด้วย
             </p>
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <CTAButton href="/contact">ปรึกษาฟรี</CTAButton>
@@ -71,7 +71,7 @@ export default function Home() {
                 <h3 className="mt-1.5 text-xl font-semibold tracking-tight md:text-2xl">งานสอบบัญชี</h3>
                 <p className="mt-2 leading-relaxed text-muted">
                   ตรวจสอบงบการเงินประจำปีสำหรับ SME ไทย ตามมาตรฐาน TSA
-                  โดยผู้สอบบัญชีรับอนุญาต (CPA) — ตรงเวลา สื่อสารรู้เรื่อง
+                  โดยผู้สอบบัญชีรับอนุญาต (CPA) ตรงเวลา ปรึกษาง่าย
                 </p>
                 <span className="mt-4 inline-flex text-sm font-medium text-accent-ink">
                   ดูบริการสอบบัญชี →
@@ -90,14 +90,14 @@ export default function Home() {
 
           <div>
             <p className="mb-4 text-sm text-muted">
-              ซอฟต์แวร์ตระกูล <span className="font-semibold text-foreground">Flow</span> —
-              เกิดจากงานตรวจสอบจริง เลือกได้ทั้ง Online และ Offline
+              ซอฟต์แวร์ตระกูล <span className="font-semibold text-foreground">Flow</span>{" "}
+              เกิดจากงานตรวจสอบจริง
             </p>
             <div className="grid gap-5 sm:grid-cols-2">
-              <Card title={`${products.auditflow.name} — Audit Platform`} href="/products/auditflow">
+              <Card title={`${products.auditflow.name} · Audit Platform`} href="/products/auditflow">
                 {products.auditflow.description}
               </Card>
-              <Card title={`${products.practiflow.name} — Practice Management`} href="/products/practiflow">
+              <Card title={`${products.practiflow.name} · Practice Management`} href="/products/practiflow">
                 {products.practiflow.description}
               </Card>
             </div>
@@ -108,7 +108,7 @@ export default function Home() {
       {/* ทำไมต้องเรา */}
       <Section
         title="ทำไมสำนักงานบัญชีถึงเชื่อเครื่องมือของเรา"
-        description="เพราะเราไม่ใช่บริษัทซอฟต์แวร์ที่เดาว่างานตรวจสอบเป็นยังไง — เราคือคนทำงานตรวจสอบเอง"
+        description="เราไม่ใช่บริษัทซอฟต์แวร์ที่เดาว่างานตรวจสอบเป็นยังไง เพราะเราคือคนทำงานตรวจสอบเอง"
       >
         <div className="grid gap-x-12 gap-y-5 md:grid-cols-2">
           <ul className="space-y-4">
@@ -116,10 +116,10 @@ export default function Home() {
               พัฒนาโดยผู้สอบบัญชีรับอนุญาต ที่ใช้เครื่องมือนี้กับงานลูกค้าจริงทุกสัปดาห์
             </CheckItem>
             <CheckItem>
-              ออกแบบตามมาตรฐานไทย — TFRS for NPAEs, TSA และแบบฟอร์มที่ DBD ใช้จริง
+              ออกแบบตามมาตรฐานไทย ทั้ง TFRS for NPAEs, TSA และแบบฟอร์มที่ DBD ใช้จริง
             </CheckItem>
             <CheckItem>
-              มีทั้งรุ่น Online (Cloud) และ Offline (ติดตั้งในเครื่อง) เลือกได้ตามนโยบายข้อมูลของสำนักงาน
+              AuditFlow มีทั้งรุ่น Online (Cloud) และ Offline (ติดตั้งในเครื่อง) เลือกได้ตามนโยบายข้อมูลของสำนักงาน
             </CheckItem>
           </ul>
           <ul className="space-y-4">
@@ -127,10 +127,10 @@ export default function Home() {
               ภาษาไทยทั้งระบบ พร้อมทีมซัพพอร์ตที่ตอบคำถามเชิงวิชาชีพได้จริง
             </CheckItem>
             <CheckItem>
-              ลดเวลางานซ้ำซาก — ยกยอด กระดาษทำการ Cal Tax และหน้ารายงาน สร้างอัตโนมัติ
+              ลดเวลางานซ้ำซาก ทั้งยกยอด กระดาษทำการ Cal Tax และหน้ารายงาน ระบบสร้างให้อัตโนมัติ
             </CheckItem>
             <CheckItem>
-              เริ่มเล็กได้ ขยายได้ — ตั้งแต่ผู้สอบอิสระคนเดียว จนถึงสำนักงานหลายสิบคน
+              เริ่มเล็กได้ ขยายได้ ตั้งแต่ผู้สอบอิสระคนเดียว จนถึงสำนักงานหลายสิบคน
             </CheckItem>
           </ul>
         </div>
@@ -138,7 +138,7 @@ export default function Home() {
 
       <CTABanner
         title="อยากเห็นว่าระบบทำงานยังไง?"
-        description="นัด demo 30 นาที หรือสอบถามบริการสอบบัญชี — ไม่มีค่าใช้จ่าย ไม่มีข้อผูกมัด"
+        description="นัด demo 30 นาที หรือสอบถามบริการสอบบัญชี ไม่มีค่าใช้จ่าย ไม่มีข้อผูกมัด"
         buttonLabel="นัด Demo / ขอใบเสนอราคา"
         buttonHref="/contact"
       />

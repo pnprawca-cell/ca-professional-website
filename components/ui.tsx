@@ -59,13 +59,17 @@ export function Card({
   title,
   children,
   href,
+  media,
 }: {
   title: string;
   children: ReactNode;
   href?: string;
+  /** Optional illustration rendered above the title (see PractiFlowFeatureArt). */
+  media?: ReactNode;
 }) {
   const body = (
     <div className="flex h-full flex-col rounded-2xl border border-line bg-card p-6 transition-shadow hover:shadow-sm">
+      {media}
       <h3 className="text-lg font-semibold tracking-tight">{title}</h3>
       <div className="mt-2 flex-1 text-[15px] leading-relaxed text-muted">{children}</div>
       {href && <span className="mt-4 text-sm font-medium text-accent-ink">ดูรายละเอียด →</span>}

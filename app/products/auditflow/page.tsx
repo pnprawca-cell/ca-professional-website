@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
-import { PageHero, Section, Card, CheckItem } from "@/components/ui";
+import { PageHero, Section, CheckItem } from "@/components/ui";
 import EarlyAccessForm from "@/components/EarlyAccessForm";
+import {
+  PlanningShot,
+  WorkingPaperShot,
+  ConfirmationShot,
+  FinancialStatementShot,
+  CalTaxShot,
+} from "@/components/AuditFlowShots";
 import { products } from "@/content/site";
 
 const p = products.auditflow;
@@ -15,59 +22,78 @@ const phases = [
     step: "1",
     title: "วางแผนงานตรวจ",
     items: [
-      "รับงาน + ประเมินความเป็นอิสระ พร้อมออก Engagement Letter",
-      "คำนวณ Materiality (PM / TE) ผูกกับงานทั้งแฟ้ม",
-      "ประเมินความเสี่ยง (CRA) แล้วระบบร่าง Audit Program ให้ตามผล",
+      "รับงานและประเมินความเป็นอิสระ พร้อมออก Engagement Letter",
+      "คำนวณ Materiality ผูกกับงานทั้งแฟ้ม",
+      "ประเมินความเสี่ยง แล้วระบบร่างโปรแกรมการตรวจให้ตามผล",
     ],
   },
   {
     step: "2",
     title: "งานภาคสนาม",
     items: [
-      "Import TB/GL แล้วได้ Grouping + Lead Schedule + กระดาษทำการทันที",
-      "Audit Sampling, Journal Entry Testing และ Analytical Review รายเดือน",
-      "ตรวจนับสต๊อก, ประมาณการทางบัญชี (TSA 540), รายการบุคคลเกี่ยวข้องกัน (TSA 550)",
-      "ทะเบียน PBC ขอเอกสารลูกค้า — เห็นว่าอะไรได้แล้ว อะไรยังค้าง",
+      "Import TB/GL แล้วได้ Grouping, Lead Schedule และกระดาษทำการทันที",
+      "สุ่มตัวอย่าง ตรวจ Journal Entry และวิเคราะห์เปรียบเทียบรายเดือน",
+      "ทะเบียนขอเอกสารลูกค้า เห็นว่าอะไรได้แล้ว อะไรยังค้าง",
     ],
   },
   {
     step: "3",
     title: "หลักฐานยืนยัน",
     items: [
-      "หนังสือยืนยันยอดธนาคาร ลูกหนี้ เจ้าหนี้ เงินกู้ ทนายความ — ติดตามส่ง/ตอบ/กระทบยอดครบวงจร",
-      "หนังสือรับรองผู้บริหาร (Management Representation) พร้อมหนังสือรับรองรายเรื่อง",
-      "ยอดยกมาปีแรก (TSA 510) และเหตุการณ์ภายหลังวันที่ในงบ + Going Concern (TSA 560/570)",
+      "หนังสือยืนยันยอดธนาคาร ลูกหนี้ เจ้าหนี้ ติดตามส่ง ตอบ และกระทบยอดครบวงจร",
+      "หนังสือรับรองผู้บริหาร พร้อมหนังสือรับรองรายเรื่อง",
+      "ยอดยกมาปีแรก เหตุการณ์ภายหลังวันที่ในงบ และการดำเนินงานต่อเนื่อง",
     ],
   },
   {
     step: "4",
     title: "สรุปและออกเล่ม",
     items: [
-      "AJE/RJE ชัดเจน 3 ชั้น: per book → รายการปรับปรุง → adjusted TB",
-      "งบการเงิน NPAE ครบ 5 ประเภทกิจการ พร้อมหมายเหตุ — ระบบ cross-check งบกับหมายเหตุทุกจุด",
-      "Cal Tax คำนวณ CIT จาก adjusted TB พร้อมรายการบวกกลับ ม.65 ตรี และเทียบ ภ.ง.ด.50",
-      "Disclosure Checklist NPAEs 35 หัวข้อ และรายงานผู้สอบบัญชีครบ 4 ความเห็น (TSA 700/705/706) ออกเป็น Word/Excel",
+      "รายการปรับปรุงชัดเจน 3 ชั้น จากยอดตามบัญชีถึงยอดหลังปรับปรุง",
+      "งบการเงิน NPAE พร้อมหมายเหตุ ระบบ cross-check ให้ทุกจุด",
+      "Cal Tax และรายงานผู้สอบบัญชี ออกเป็น Word และ Excel",
     ],
   },
 ];
 
+const shots = [
+  {
+    title: "วางแผนก่อนลงมือ",
+    detail:
+      "กำหนด Materiality จากฐานตัวเลขจริง แล้วผลประเมินความเสี่ยงจะร่างโปรแกรมการตรวจให้เอง ไม่ต้องเริ่มจากกระดาษเปล่าทุกปี",
+    shot: <PlanningShot />,
+  },
+  {
+    title: "กระดาษทำการที่โยงถึงหลักฐาน",
+    detail:
+      "ทุกยอดในกระดาษทำการรู้ว่ามาจากไหน ใช้หลักฐานอะไรรองรับ และใครเป็นคนจัดทำกับสอบทาน ตัวเลขที่ยกไปงบก็ออกมาจากหน้านี้",
+    shot: <WorkingPaperShot />,
+  },
+  {
+    title: "รู้เสมอว่าหลักฐานถึงไหน",
+    detail:
+      "ทะเบียนหนังสือยืนยันยอดบอกได้ทันทีว่าใครตอบแล้ว ใครยังไม่ตอบ และผลต่างที่ต้องกระทบยอดเหลืออีกเท่าไร",
+    shot: <ConfirmationShot />,
+  },
+  {
+    title: "งบการเงินมาจากตัวเลขชุดเดียวกัน",
+    detail:
+      "งบและหมายเหตุสร้างจากยอดหลังปรับปรุงในแฟ้ม ระบบตรวจให้ว่างบลงตัวและตัวเลขในหมายเหตุตรงกับหน้างบทุกจุด",
+    shot: <FinancialStatementShot />,
+  },
+  {
+    title: "ตัวเลขไหลถึงกันจนถึงภาษี",
+    detail:
+      "Cal Tax คำนวณต่อจากยอดหลังปรับปรุงในแฟ้มเดียวกัน แก้กระดาษทำการที่เดียว ตัวเลขภาษีและงบการเงินขยับตาม",
+    shot: <CalTaxShot />,
+  },
+];
+
 const trustPoints = [
-  {
-    title: "Audit trail แก้ไขไม่ได้",
-    detail: "ทุก action ถูกบันทึกแบบ append-only — ห้ามแก้ ห้ามลบ ตอบผู้ตรวจคุณภาพงานได้เสมอว่าใครทำอะไรเมื่อไหร่",
-  },
-  {
-    title: "เก็บแฟ้มตามมาตรฐาน",
-    detail: "Lock แฟ้มเมื่อออกรายงาน พร้อม archive และ retention 5 ปีตามแนวทาง TSA 230 — เปิดแฟ้มใหม่ต้องมีเหตุผลบันทึกไว้",
-  },
-  {
-    title: "สิทธิ์เข้าถึงสองชั้น",
-    detail: "แยกสิทธิ์ทั้งระดับลูกค้าและระดับ engagement — ทีมเห็นเฉพาะงานที่ได้รับมอบหมาย ตามหลัก need-to-know",
-  },
-  {
-    title: "พิสูจน์ด้วยชุดทดสอบ",
-    detail: "ทุกกฎในระบบมี automated test รองรับ — ผ่านแล้วมากกว่า 1,100 รายการ ก่อนทุกครั้งที่อัปเดต",
-  },
+  "บันทึกทุกการแก้ไข ลบไม่ได้",
+  "ล็อกและเก็บแฟ้มไว้ 5 ปี",
+  "แยกสิทธิ์เข้าถึงรายคนรายงาน",
+  "ทดสอบระบบอัตโนมัติกว่า 1,100 รายการ",
 ];
 
 export default function AuditFlowPage() {
@@ -76,8 +102,8 @@ export default function AuditFlowPage() {
       <PageHero eyebrow={p.category} title={p.tagline} description={p.description} />
 
       <Section
-        title="ครอบคลุมงานตรวจทั้งวงจร — ตั้งแต่รับงานจนเข้าเล่ม"
-        description="ไม่ใช่เครื่องมือช่วยบางจุด แต่เป็นแฟ้มงานตรวจทั้งแฟ้มในระบบเดียว ทุกตัวเลขเชื่อมถึงกัน แก้ที่เดียวไหลไปทั้งเล่ม"
+        title="ครอบคลุมงานตรวจทั้งวงจร ตั้งแต่รับงานจนเข้าเล่ม"
+        description="แฟ้มงานตรวจทั้งแฟ้มอยู่ในระบบเดียว ทุกตัวเลขเชื่อมถึงกัน แก้ที่เดียวไหลไปทั้งเล่ม"
         tint
       >
         <div className="grid gap-5 md:grid-cols-2">
@@ -99,9 +125,24 @@ export default function AuditFlowPage() {
         </div>
       </Section>
 
+      <Section title="ตัวอย่างหน้าจอการใช้งาน">
+        <div className="space-y-12 md:space-y-20">
+          {shots.map((s, i) => (
+            <div key={s.title} className="grid items-center gap-8 lg:grid-cols-2 lg:gap-14">
+              <div className={i % 2 === 1 ? "lg:order-2" : undefined}>{s.shot}</div>
+              <div className={`max-w-md ${i % 2 === 1 ? "lg:order-1" : ""}`}>
+                <h3 className="text-xl font-semibold tracking-tight md:text-2xl">{s.title}</h3>
+                <p className="mt-3 leading-relaxed text-muted">{s.detail}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Section>
+
       <Section
         title="ยกยอดจากโปรแกรมบัญชีไทยได้ทันที"
-        description="รองรับไฟล์ Trial Balance / GL จากโปรแกรมที่สำนักงานบัญชีไทยใช้จริง — import แล้วระบบ tie ยอดคุมให้อัตโนมัติ และ mapping ที่ทำไว้ใช้ซ้ำได้ในปีถัดไป"
+        description="รองรับไฟล์ Trial Balance และ GL จากโปรแกรมที่สำนักงานบัญชีไทยใช้จริง import แล้วระบบ tie ยอดคุมให้อัตโนมัติ ส่วน mapping ที่ทำไว้ใช้ซ้ำได้ในปีถัดไป"
+        tint
       >
         <div className="flex flex-wrap gap-3">
           {["Express", "FlowAccount", "PEAK", "SMEMOVE", "Excel (จัดรูปแบบเอง)"].map((name) => (
@@ -115,25 +156,29 @@ export default function AuditFlowPage() {
         </div>
       </Section>
 
-      <Section title="ออกแบบมาให้ตอบผู้ตรวจคุณภาพงานได้" tint>
-        <div className="grid gap-5 md:grid-cols-2">
+      <Section title="งานทุกชิ้นย้อนกลับไปตรวจได้">
+        <ul className="grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-4">
           {trustPoints.map((point) => (
-            <Card key={point.title} title={point.title}>
-              {point.detail}
-            </Card>
+            <li key={point} className="flex items-start gap-2.5 bg-card p-5">
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 12 12"
+                fill="none"
+                aria-hidden="true"
+                className="mt-1 shrink-0"
+              >
+                <path
+                  d="M2.5 6.5L5 9l4.5-6"
+                  stroke="var(--accent-ink)"
+                  strokeWidth="1.7"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span className="text-[15px] font-medium leading-snug">{point}</span>
+            </li>
           ))}
-        </div>
-      </Section>
-
-      <Section
-        title="เอกสารออกจากระบบเป็นแบบไทยเสมอ"
-        description="สร้างโดยผู้สอบบัญชีไทย เพื่องานตรวจตามมาตรฐานไทยโดยเฉพาะ"
-      >
-        <ul className="grid gap-3 md:grid-cols-2">
-          <CheckItem>งบการเงิน หมายเหตุ และรายงานผู้สอบบัญชี เป็นภาษาไทยตามแบบทางการ</CheckItem>
-          <CheckItem>วันที่แสดงเป็นพุทธศักราชทุกจุด ตัวเลขเงินคั่นหลักพันทศนิยม 2 ตำแหน่ง</CheckItem>
-          <CheckItem>อิงมาตรฐานจริง: TFRS for NPAEs, TSA และแบบนำส่ง DBD</CheckItem>
-          <CheckItem>ทุก module ส่งออกเป็น Excel ได้ — ไม่ล็อกข้อมูลไว้ในระบบ</CheckItem>
         </ul>
       </Section>
 
@@ -148,15 +193,15 @@ export default function AuditFlowPage() {
             <ul className="mt-4 space-y-3">
               <CheckItem>ทำงานร่วมกันทั้งทีมแบบ real-time จากทุกที่</CheckItem>
               <CheckItem>สำรองข้อมูลอัตโนมัติ อัปเดตฟีเจอร์ใหม่ทันที</CheckItem>
-              <CheckItem>คิดราคาแบบ subscription ต่อผู้ใช้ต่อปี</CheckItem>
+              <CheckItem>คิดราคาตามจำนวนบริษัทที่ตรวจ ผู้ใช้ในทีมไม่จำกัดจำนวน</CheckItem>
             </ul>
           </div>
           <div className="rounded-2xl border border-line bg-card p-7">
             <h3 className="text-lg font-semibold">💻 Desktop (Offline)</h3>
             <ul className="mt-4 space-y-3">
-              <CheckItem>ข้อมูลลูกค้าอยู่ในเครื่องของสำนักงาน 100% — ตอบโจทย์ PDPA ตรงที่สุด</CheckItem>
+              <CheckItem>ข้อมูลลูกค้าอยู่ในเครื่องของสำนักงาน 100% ตอบโจทย์ PDPA ตรงที่สุด</CheckItem>
               <CheckItem>ทำงานได้โดยไม่ต้องต่ออินเทอร์เน็ต</CheckItem>
-              <CheckItem>ซื้อ license ครั้งเดียว พร้อมอัปเดต template รายปี</CheckItem>
+              <CheckItem>ซื้อ license เป็นเจ้าของ พร้อมค่าอัปเดต template รายปีที่จะต่อหรือไม่ต่อก็ได้</CheckItem>
             </ul>
           </div>
         </div>
@@ -164,7 +209,7 @@ export default function AuditFlowPage() {
 
       <Section
         title={`ลงชื่อใช้ ${p.name} ก่อนใคร`}
-        description="เราใช้ระบบนี้กับงานตรวจของสำนักงานเราเองมาตลอดฤดูสอบบัญชี และกำลังเปิดให้สำนักงานภายนอกใช้เป็นรุ่นแรกต้นปี 2570 — รับจำนวนจำกัด ผู้ลงชื่อก่อนได้นัด demo กับงานจริงก่อน และมีส่วนกำหนดฟีเจอร์รุ่นแรก"
+        description="เราใช้ระบบนี้กับงานตรวจของสำนักงานเราเองมาตลอดฤดูสอบบัญชี และกำลังเปิดให้สำนักงานภายนอกใช้เป็นรุ่นแรกต้นปี 2570 รับจำนวนจำกัด ผู้ลงชื่อก่อนได้นัด demo กับงานจริงก่อน และมีส่วนกำหนดฟีเจอร์รุ่นแรก"
       >
         <EarlyAccessForm productName={p.name} />
       </Section>

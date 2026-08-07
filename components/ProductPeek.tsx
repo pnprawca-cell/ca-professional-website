@@ -42,7 +42,7 @@ export default function ProductPeek() {
         {/* schedule header */}
         <div className="flex items-baseline justify-between gap-3 px-4 pt-4">
           <div>
-            <p className="text-[13px] font-semibold tracking-tight">Lead Schedule — สินทรัพย์หมุนเวียน</p>
+            <p className="text-[13px] font-semibold tracking-tight">Lead Schedule · สินทรัพย์หมุนเวียน</p>
             <p className="mt-0.5 text-[11px] text-muted">ปีบัญชี 2568 · หน่วย: บาท</p>
           </div>
           <span className="whitespace-nowrap rounded-md border border-line px-2 py-1 text-[11px] font-medium text-muted">
