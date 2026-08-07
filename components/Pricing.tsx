@@ -3,6 +3,13 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
 import { CTAButton, CheckItem, PlanLedger, PlanRow } from "@/components/ui";
+import {
+  products,
+  signupUrl,
+  type ProductKey,
+  type SignupCycle,
+  type SignupPlan,
+} from "@/content/site";
 
 export type SubPlan = {
   name: string;
@@ -12,6 +19,8 @@ export type SubPlan = {
   monthly: number;
   /** บาทต่อปี เมื่อจ่ายรายปี (0 = แผนฟรี) */
   yearly: number;
+  /** รหัสแผนที่ส่งให้พอร์ทัลตอนกดสมัคร — ไม่ใส่ = แผนนี้ไม่มีปุ่มสมัครในตาราง */
+  planId?: SignupPlan;
   /** แผนนำของ product — ได้บล็อกเต็มความกว้างเหนือ ledger แผนละหนึ่งเท่านั้น */
   lead?: boolean;
   badge?: string;
@@ -22,6 +31,24 @@ export type SubPlan = {
 };
 
 type Billing = "monthly" | "yearly";
+
+/** ชื่อรอบบิลบนเว็บ ↔ ค่าที่พอร์ทัลรับ (ฝั่งนั้นใช้คำว่า annual) */
+const CYCLE_PARAM: Record<Billing, SignupCycle> = {
+  monthly: "monthly",
+  yearly: "annual",
+};
+
+const isFreePlan = (plan: SubPlan) => plan.monthly === 0 && plan.yearly === 0;
+
+/** ลิงก์สมัครของแผนหนึ่ง — แผนฟรีไม่ส่ง cycle ไปด้วยเพราะไม่มีรอบบิลให้เลือก */
+function planSignupHref(product: ProductKey, plan: SubPlan, billing: Billing) {
+  if (!plan.planId) return undefined;
+  return signupUrl({
+    product,
+    plan: plan.planId,
+    cycle: isFreePlan(plan) ? undefined : CYCLE_PARAM[billing],
+  });
+}
 
 const baht = (n: number) => `฿${n.toLocaleString("en-US")}`;
 
@@ -103,11 +130,16 @@ function BillingToggle({
 function LeadPlan({
   plan,
   billing,
-  cta,
+  signupHref,
+  secondaryCta,
+  note,
 }: {
   plan: SubPlan;
   billing: Billing;
-  cta?: { href: string; label: string; note?: string };
+  signupHref?: string;
+  /** ทางเลือกที่สองของแผนนำ เช่น "ทดลองฟรี 30 วัน" ของ PractiFlow */
+  secondaryCta?: { href: string; label: string };
+  note?: string;
 }) {
   const { amount, unit, sub } = priceOf(plan, billing);
   return (
@@ -144,12 +176,24 @@ function LeadPlan({
             {unit && <span className="ml-1.5 text-base font-medium text-muted">{unit}</span>}
           </p>
           {sub && <p className="mt-1.5 text-sm tabular-nums text-muted">{sub}</p>}
-          {cta && (
+          {(signupHref || secondaryCta) && (
             <div className="mt-7">
-              <CTAButton href={cta.href}>{cta.label}</CTAButton>
-              {cta.note && (
-                <p className="mt-3 max-w-[26ch] text-sm leading-relaxed text-muted md:ml-auto">
-                  {cta.note}
+              {/* บนจอเล็กปุ่มยืดเต็มความกว้างและเรียงลง บนจอใหญ่ชิดขวาไปกับตัวเลข */}
+              <div className="flex flex-col gap-2.5 sm:flex-row md:justify-end">
+                {signupHref && (
+                  <CTAButton href={signupHref} ariaLabel={`สมัครใช้งานแผน ${plan.name}`}>
+                    สมัครใช้งาน
+                  </CTAButton>
+                )}
+                {secondaryCta && (
+                  <CTAButton href={secondaryCta.href} variant="secondary">
+                    {secondaryCta.label}
+                  </CTAButton>
+                )}
+              </div>
+              {note && (
+                <p className="mt-3.5 max-w-[34ch] text-sm leading-relaxed text-muted md:ml-auto">
+                  {note}
                 </p>
               )}
             </div>
@@ -165,17 +209,23 @@ function LeadPlan({
  * ตั้งใจไม่ทำเป็นการ์ดสามใบเรียงกัน — ลำดับชั้นมาจากความต่างของน้ำหนัก ไม่ใช่จากการ์ดที่เหมือนกัน
  */
 export function SubscriptionPricing({
+  product,
   plans,
-  cta,
+  secondaryCta,
+  note,
   footnote,
 }: {
+  /** ใช้สร้าง `?product=` ของลิงก์สมัคร และชื่อ product ใน aria-label ของแต่ละแถว */
+  product: ProductKey;
   plans: SubPlan[];
-  cta?: { href: string; label: string; note?: string };
+  secondaryCta?: { href: string; label: string };
+  note?: string;
   footnote?: ReactNode;
 }) {
   const [billing, setBilling] = useState<Billing>("monthly");
   const lead = plans.find((plan) => plan.lead);
   const rest = plans.filter((plan) => !plan.lead);
+  const productName = products[product].name;
 
   return (
     <div>
@@ -183,7 +233,13 @@ export function SubscriptionPricing({
 
       {lead && (
         <div className="mt-6">
-          <LeadPlan plan={lead} billing={billing} cta={cta} />
+          <LeadPlan
+            plan={lead}
+            billing={billing}
+            signupHref={planSignupHref(product, lead, billing)}
+            secondaryCta={secondaryCta}
+            note={note}
+          />
         </div>
       )}
 
@@ -193,6 +249,7 @@ export function SubscriptionPricing({
           <PlanLedger>
             {rest.map((plan) => {
               const { amount, unit, sub } = priceOf(plan, billing);
+              const href = planSignupHref(product, plan, billing);
               return (
                 <PlanRow
                   key={plan.name}
@@ -202,6 +259,15 @@ export function SubscriptionPricing({
                   unit={unit}
                   sub={sub}
                   priceKey={`${billing}-${amount}`}
+                  action={
+                    href
+                      ? {
+                          href,
+                          label: "สมัคร",
+                          ariaLabel: `สมัครใช้งาน ${productName} แผน ${plan.name}`,
+                        }
+                      : undefined
+                  }
                 />
               );
             })}

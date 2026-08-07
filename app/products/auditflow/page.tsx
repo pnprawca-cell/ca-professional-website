@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PageHero, Section, CheckItem } from "@/components/ui";
+import { PageHero, Section, CheckItem, ProductActions } from "@/components/ui";
 import DemoRequestForm from "@/components/DemoRequestForm";
 import {
   PlanningShot,
@@ -8,7 +8,7 @@ import {
   FinancialStatementShot,
   CalTaxShot,
 } from "@/components/AuditFlowShots";
-import { products } from "@/content/site";
+import { products, signupUrl } from "@/content/site";
 
 const p = products.auditflow;
 
@@ -100,6 +100,13 @@ export default function AuditFlowPage() {
   return (
     <>
       <PageHero eyebrow={p.category} title={p.tagline} description={p.description} />
+
+      <ProductActions
+        signupHref={signupUrl({ product: "auditflow" })}
+        signupAriaLabel={`สมัครใช้งาน ${p.name}`}
+        demoHref="#demo"
+        note="เริ่มที่แผน Free 1 บริษัทได้ทันที (เอกสารที่ส่งออกมี watermark) หรือเลือกแผนเสียเงินแล้วชำระด้วยการโอน เราเปิดสิทธิให้ภายใน 1 วันทำการ"
+      />
 
       <Section
         title="ครอบคลุมงานตรวจทั้งวงจร ตั้งแต่รับงานจนเข้าเล่ม"
@@ -208,8 +215,9 @@ export default function AuditFlowPage() {
       </Section>
 
       <Section
-        title={`เริ่มใช้ ${p.name} ที่สำนักงานคุณ`}
-        description="เราใช้ระบบนี้กับงานตรวจของสำนักงานเราเองมาตลอดฤดูสอบบัญชี และตอนนี้เปิดให้สำนักงานภายนอกใช้แล้ว แจ้งเราแล้วเราเปิดบัญชีแผน Free ให้ 1 บริษัท เอกสารที่ส่งออกมี watermark หรือนัด demo 30 นาที เราจะพาดูระบบกับแฟ้มงานตรวจจริงตั้งแต่วางแผนจนออกเล่ม"
+        id="demo"
+        title={`นัด demo ${p.name} 30 นาที`}
+        description="เราใช้ระบบนี้กับงานตรวจของสำนักงานเราเองมาตลอดฤดูสอบบัญชี และตอนนี้เปิดให้สำนักงานภายนอกใช้แล้ว นัดเวลาไว้แล้วเราจะพาดูระบบกับแฟ้มงานตรวจจริงตั้งแต่วางแผนจนออกเล่ม หรือถ้าพร้อมเริ่มเองแล้ว สมัครใช้งานได้จากปุ่มด้านบนเลย"
       >
         <DemoRequestForm productName={p.name} />
       </Section>

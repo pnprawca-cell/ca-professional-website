@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 import type { Metadata } from "next";
 import { PageHero, Section, CTAButton, CTABanner, CheckItem, PlanLedger, PlanRow } from "@/components/ui";
 import { SubscriptionPricing, type SubPlan } from "@/components/Pricing";
-import { products } from "@/content/site";
+import { products, signupUrl } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "ราคา",
@@ -15,19 +15,35 @@ export const metadata: Metadata = {
  *   AuditFlow  — Strategy/Audit platform/Gate0_OnePager_CA_Audit_Platform.pdf
  *   PractiFlow — Strategy/PractiFlow_OnePager_TH.pdf
  * ทุกตัวเลขเป็นราคาก่อน VAT 7% ตามที่ one-pager ระบุ
- * หมายเหตุ: PLAN_PRICING ใน repo Audit-platform ยังเป็นราคาชุดเก่า (690/1,990/3,490)
- * ถ้าจะแก้ราคาที่นี่ ต้องไปแก้ที่ระบบออกใบแจ้งหนี้ให้ตรงกันด้วย
+ *
+ * ⚠️ ยังไม่ตรงกับระบบออกใบแจ้งหนี้: PLAN_PRICING ใน repo Audit-platform ยังเป็นชุดเก่า
+ * (online_10/50/100 = 690/1,990/3,490) สเปก §5.6 สั่งให้แก้ฝั่งนั้นตามหน้านี้
+ * ลบหมายเหตุนี้ได้เมื่อ Audit-platform/src/lib/billing/defs.ts อัปเดตราคาแล้ว (ตรวจ ณ 7 ส.ค. 2569 ยังไม่แก้)
  *
  * ราคาเก็บเป็นตัวเลขล้วน เพื่อให้สวิตช์รายเดือน/รายปีคำนวณส่วนต่างและค่าเฉลี่ยต่อเดือนได้เอง
+ * planId = รหัสที่ส่งไปให้พอร์ทัลตอนกดสมัคร (ดู SignupPlan ใน content/site.ts)
  */
 const auditflowOnline: SubPlan[] = [
-  { name: "Free", scope: "1 บริษัท · เอกสารที่ส่งออกมี watermark", monthly: 0, yearly: 0 },
-  { name: "Starter", scope: "ไม่เกิน 10 บริษัท", monthly: 590, yearly: 5900 },
+  {
+    name: "Free",
+    scope: "1 บริษัท · เอกสารที่ส่งออกมี watermark",
+    monthly: 0,
+    yearly: 0,
+    planId: "free",
+  },
+  {
+    name: "Starter",
+    scope: "ไม่เกิน 10 บริษัท",
+    monthly: 590,
+    yearly: 5900,
+    planId: "online_10",
+  },
   {
     name: "Pro",
     scope: "ไม่เกิน 50 บริษัท",
     monthly: 2190,
     yearly: 21900,
+    planId: "online_50",
     lead: true,
     fit: "เหมาะกับสำนักงานขนาดกลางที่ตรวจหลักสิบบริษัทต่อปี",
     reasons: [
@@ -36,7 +52,13 @@ const auditflowOnline: SubPlan[] = [
       "เอกสารที่ส่งออกไม่มี watermark ใช้ยื่นงานจริงได้",
     ],
   },
-  { name: "Firm", scope: "ไม่เกิน 100 บริษัท", monthly: 3590, yearly: 35900 },
+  {
+    name: "Firm",
+    scope: "ไม่เกิน 100 บริษัท",
+    monthly: 3590,
+    yearly: 35900,
+    planId: "online_100",
+  },
 ];
 
 const auditflowOffline = [
@@ -45,14 +67,25 @@ const auditflowOffline = [
   { name: "L", scope: "100 บริษัท", first: "฿49,900", update: "฿7,485" },
 ];
 
+/**
+ * ไม่มีแผน Free แล้ว — พราวเคาะ 7 ส.ค. 2569 ว่าทางลองก่อนซื้อของ PractiFlow
+ * เหลือ "ทดลองฟรี 30 วัน" อย่างเดียว (สเปก §1 ตารางคำตัดสิน)
+ * ก่อนหน้านี้หน้านี้สัญญาไว้ทั้งแผนฟรีถาวร ≤5 ราย และทดลองฟรี 30 วัน ซึ่งทับกันเอง
+ */
 const practiflowPlans: SubPlan[] = [
-  { name: "Free", scope: "ไม่เกิน 5 ราย", monthly: 0, yearly: 0 },
-  { name: "S · เริ่มต้น", scope: "ไม่เกิน 30 ราย", monthly: 590, yearly: 5900 },
+  {
+    name: "S · เริ่มต้น",
+    scope: "ไม่เกิน 30 ราย",
+    monthly: 590,
+    yearly: 5900,
+    planId: "pm_30",
+  },
   {
     name: "M · มาตรฐาน",
     scope: "ไม่เกิน 120 ราย",
     monthly: 1490,
     yearly: 14900,
+    planId: "pm_120",
     lead: true,
     badge: "ยอดนิยม",
     fit: "เหมาะกับสำนักงานที่ดูแลลูกค้าหลักร้อยราย",
@@ -62,7 +95,13 @@ const practiflowPlans: SubPlan[] = [
       "ใช้งานผ่านเว็บ ไม่ต้องติดตั้งอะไรบนเครื่อง",
     ],
   },
-  { name: "L · สำนักงาน", scope: "ไม่เกิน 300 ราย", monthly: 2990, yearly: 29900 },
+  {
+    name: "L · สำนักงาน",
+    scope: "ไม่เกิน 300 ราย",
+    monthly: 2990,
+    yearly: 29900,
+    planId: "pm_300",
+  },
 ];
 
 function EditionHeading({ title, note }: { title: string; note: string }) {
@@ -138,7 +177,11 @@ export default function PricingPage() {
         </p>
 
         <EditionHeading title="Online" note="ใช้ผ่าน cloud ไม่ต้องติดตั้ง" />
-        <SubscriptionPricing plans={auditflowOnline} />
+        <SubscriptionPricing
+          product="auditflow"
+          plans={auditflowOnline}
+          note="กรอกข้อมูลสำนักงานที่ระบบสมัคร รับใบแจ้งหนี้ทางอีเมล โอนแล้วแนบสลิป เราเปิดสิทธิให้ภายใน 1 วันทำการ"
+        />
 
         <div className="mt-14">
           <EditionHeading
@@ -184,7 +227,7 @@ export default function PricingPage() {
                 <span className="tabular-nums">10</span> สำนักงานแรก
               </p>
               <p className="mt-2 max-w-[54ch] text-[15px] leading-relaxed text-background/70">
-                AuditFlow เปิดให้ใช้งานแล้ววันนี้ · แจ้งเราแล้วเราเปิดบัญชีแผน Free ให้ หรือคุยกับเราเพื่อดูระบบจริงก่อน
+                AuditFlow เปิดให้ใช้งานแล้ววันนี้ · สมัครแผน Free ได้เองจากตารางด้านบน หรือคุยกับเราเพื่อดูระบบจริงก่อนตัดสินใจ
               </p>
             </div>
             <CTAButton href="/contact" variant="accent">
@@ -200,12 +243,13 @@ export default function PricingPage() {
         description="คิดตามจำนวนลูกค้าที่สำนักงานดูแล ไม่คิดตามจำนวนคน เพิ่มพนักงานกี่คนก็ไม่มีค่าใช้จ่ายเพิ่ม"
       >
         <SubscriptionPricing
+          product="practiflow"
           plans={practiflowPlans}
-          cta={{
-            href: "/contact",
-            label: "ขอ demo PractiFlow",
-            note: "ทดลองใช้ฟรี 30 วัน ครบทุกฟีเจอร์ ไม่ต้องผูกบัตร",
+          secondaryCta={{
+            href: signupUrl({ product: "practiflow", plan: "pm_trial" }),
+            label: "ทดลองฟรี 30 วัน",
           }}
+          note="ทดลองฟรีได้ครบทุกฟีเจอร์ 30 วัน ไม่ต้องผูกบัตร ครบแล้วค่อยเลือกแผน"
         />
 
         <Notes
@@ -216,10 +260,11 @@ export default function PricingPage() {
           ]}
         />
 
-        <div className="mt-6">
+        <div className="mt-6 flex flex-wrap gap-x-8 gap-y-3">
           <MoreLink href="/products/practiflow">
             ดูฟีเจอร์ PractiFlow ทั้งหมด
           </MoreLink>
+          <MoreLink href="/contact">อยากดูระบบก่อน นัด demo 30 นาที</MoreLink>
         </div>
       </Section>
 

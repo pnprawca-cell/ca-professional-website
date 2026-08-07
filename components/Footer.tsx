@@ -38,6 +38,16 @@ export default function Footer() {
                     คำถามที่พบบ่อย
                   </Link>
                 </li>
+                <li>
+                  <Link href="/signup" className="text-muted transition-colors hover:text-foreground">
+                    สมัครใช้งาน
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/login" className="text-muted transition-colors hover:text-foreground">
+                    เข้าสู่ระบบ
+                  </Link>
+                </li>
               </ul>
             </div>
             <div>

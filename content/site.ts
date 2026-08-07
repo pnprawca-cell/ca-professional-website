@@ -7,6 +7,16 @@
 export const siteUrl = "https://ca-professional.com";
 
 /**
+ * ระบบสมัครใช้งานและชำระเงินจริง — คนละ origin กับเว็บนี้โดยตั้งใจ
+ * (สเปก docs/superpowers/specs/2026-08-07-signup-payment-design.md §2 · คำตัดสิน A5)
+ *
+ * เว็บนี้เป็นหน้าร้านอย่างเดียว: ไม่มีฐานข้อมูล ไม่รับเงิน ไม่รับไฟล์
+ * และไม่เก็บข้อมูลส่วนบุคคลของขั้นตอนสมัคร — ทุกอย่างนั้นเกิดที่พอร์ทัล
+ * เหตุผลที่แยก origin: กัน XSS ที่เว็บขายไม่ให้ลามไปถึง session ของระบบสอบบัญชี
+ */
+export const portalUrl = "https://portal.ca-professional.com";
+
+/**
  * Formspree form ID สำหรับรับข้อมูลฟอร์มบนเซิร์ฟเวอร์ (ฟอร์มติดต่อ + Early Access ใช้ ID เดียวกัน
  * แยกประเภทด้วย field "ประเภทฟอร์ม" ในข้อมูลที่ส่ง)
  * วิธีเปิดใช้: สมัครที่ formspree.io → สร้าง form → คัดลอก ID (เช่น "mqkvabcd") มาใส่ที่นี่
@@ -29,6 +39,16 @@ export const company = {
   auditorLicenseNumber: "13466",
 };
 
+/**
+ * ทางเข้าใช้งานของ product หนึ่งตัว — สองแบบ เพราะสองระบบวางที่อยู่ไว้ต่างกัน (สเปก §2)
+ *   shared   = ทุกสำนักงานเข้าที่อยู่เดียวกัน แล้วระบบแยกข้อมูลด้วยบัญชีผู้ใช้
+ *   per-firm = แต่ละสำนักงานมีที่อยู่ของตัวเอง เว็บบอกได้แค่รูปแบบ ไม่รู้ที่อยู่ของใคร
+ */
+export type ProductAccess =
+  | { kind: "shared"; url: string }
+  /** แยกเป็นสองส่วนเพื่อให้หน้า /login เน้นเฉพาะท่อนที่ผู้ใช้ต้องแทนด้วยชื่อของตัวเองได้ */
+  | { kind: "per-firm"; slugLabel: string; baseDomain: string };
+
 export const products = {
   auditflow: {
     name: "AuditFlow",
@@ -37,11 +57,15 @@ export const products = {
     description:
       "จัดการงานตรวจสอบตั้งแต่วางแผนจนออกหน้ารายงาน รวมกระดาษทำการ Lead Schedule Materiality Cal Tax และงบการเงิน NPAE ไว้ในที่เดียว",
     /**
-     * ค่า placeholder — ยังไม่มีระบบที่ URL นี้ และตอนนี้ไม่มีหน้าไหนในเว็บลิงก์มาที่นี่
-     * (หน้า /login ให้ติดต่อทีมงานเปิดบัญชีให้แทน เพราะยังไม่มีระบบสมัครด้วยตัวเอง)
-     * เมื่อระบบเปิดใช้งานจริง: แก้เป็น URL จริง แล้วค่อยเปลี่ยนปุ่มในหน้า /login ให้ชี้มาที่ค่านี้
+     * AuditFlow เสิร์ฟแยกที่อยู่ต่อสำนักงาน (`<slug>.ca-professional.com` — สเปก §2)
+     * จึงไม่มี URL กลางให้กดเข้าใช้งานได้ทันที และเว็บนี้ไม่มีทะเบียนลูกค้าให้ค้นด้วย
+     * ที่อยู่จริงของแต่ละสำนักงานอยู่ในอีเมลตอนเปิดสิทธิ — หน้า /login จึงบอกรูปแบบไว้
      */
-    appUrl: "https://app.ca-professional.com/auditflow",
+    access: {
+      kind: "per-firm",
+      slugLabel: "ชื่อสำนักงานของคุณ",
+      baseDomain: "ca-professional.com",
+    },
   },
   practiflow: {
     name: "PractiFlow",
@@ -49,14 +73,49 @@ export const products = {
     tagline: "ระบบบริหารสำนักงานบัญชีและสอบบัญชี",
     description:
       "ติดตามงานทุกลูกค้า ทุก deadline ทุกใบแจ้งหนี้ เห็นภาพรวมทั้งสำนักงานในหน้าจอเดียว",
-    /**
-     * ค่า placeholder — ยังไม่มีระบบที่ URL นี้ และตอนนี้ไม่มีหน้าไหนในเว็บลิงก์มาที่นี่
-     * (หน้า /login ให้ติดต่อทีมงานเปิดบัญชีให้แทน เพราะยังไม่มีระบบสมัครด้วยตัวเอง)
-     * เมื่อระบบเปิดใช้งานจริง: แก้เป็น URL จริง แล้วค่อยเปลี่ยนปุ่มในหน้า /login ให้ชี้มาที่ค่านี้
-     */
-    appUrl: "https://app.ca-professional.com/practiflow",
+    /** PractiFlow แยกข้อมูลแบบ row-level จึงอยู่ host เดียวทั้งระบบ (สเปก §2 ตาราง DNS) */
+    access: { kind: "shared", url: "https://pm.ca-professional.com" },
   },
-};
+} satisfies Record<string, { access: ProductAccess } & Record<string, unknown>>;
+
+export type ProductKey = keyof typeof products;
+
+/** รอบการชำระเงินที่พอร์ทัลรับ — ตรงกับ `BillingCycle` ใน Audit-platform */
+export type SignupCycle = "monthly" | "annual";
+
+/**
+ * รหัสแผนที่ส่งไปให้พอร์ทัลผ่าน `?plan=`
+ *
+ * auditflow  — ยืนยันแล้วว่าตรงกับ `PlanId` ใน Audit-platform/src/lib/billing/defs.ts
+ * practiflow — ชั้นสิทธิของ PractiFlow ยังไม่ถูกสร้าง (สเปก §6 อยู่ในช่วงที่ 4)
+ *              รหัสชุดนี้จึงเป็นข้อเสนอจากฝั่งเว็บ ตั้งชื่อตามแบบเดียวกับ `online_NN`
+ *              คือ `pm_<โควตาลูกค้า>` ถ้าฝั่ง PractiFlow ตั้งชื่ออื่น ต้องกลับมาแก้ที่นี่
+ */
+export type SignupPlan =
+  | "free"
+  | "online_10"
+  | "online_50"
+  | "online_100"
+  | "pm_trial"
+  | "pm_30"
+  | "pm_120"
+  | "pm_300";
+
+/**
+ * ลิงก์ไปหน้าสมัครที่พอร์ทัล พร้อมพาแผนที่ผู้ใช้กดมาด้วย
+ * path `/signup` ตามที่สเปก §3 เขียนเส้นทางลูกค้าไว้ (ฝั่งพอร์ทัลผูก host → route ใน §5.1)
+ * ไม่ใส่ `cycle` กับแผนฟรีและแผนทดลอง เพราะไม่มีรอบบิลให้เลือก
+ */
+export function signupUrl(opts: {
+  product: ProductKey;
+  plan?: SignupPlan;
+  cycle?: SignupCycle;
+}): string {
+  const query = new URLSearchParams({ product: opts.product });
+  if (opts.plan) query.set("plan", opts.plan);
+  if (opts.cycle) query.set("cycle", opts.cycle);
+  return `${portalUrl}/signup?${query.toString()}`;
+}
 
 export const nav = [
   { label: "บริการสอบบัญชี", href: "/services/audit" },

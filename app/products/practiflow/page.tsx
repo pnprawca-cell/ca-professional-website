@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { PageHero, Section, Card, CheckItem } from "@/components/ui";
+import { PageHero, Section, Card, CheckItem, ProductActions } from "@/components/ui";
 import PractiFlowPeek from "@/components/PractiFlowPeek";
 import DemoRequestForm from "@/components/DemoRequestForm";
 import {
@@ -10,7 +10,7 @@ import {
   TeamArt,
   ReportArt,
 } from "@/components/PractiFlowFeatureArt";
-import { products } from "@/content/site";
+import { products, signupUrl } from "@/content/site";
 
 const p = products.practiflow;
 
@@ -23,6 +23,13 @@ export default function PractiFlowPage() {
   return (
     <>
       <PageHero eyebrow={p.category} title={p.tagline} description={p.description} />
+
+      <ProductActions
+        signupHref={signupUrl({ product: "practiflow", plan: "pm_trial" })}
+        signupAriaLabel={`สมัครทดลองใช้ ${p.name} ฟรี 30 วัน`}
+        demoHref="#demo"
+        note="ทดลองฟรี 30 วัน ครบทุกฟีเจอร์ ไม่ต้องผูกบัตร ครบแล้วค่อยเลือกแผน ข้อมูลที่ทำไว้ยังอยู่ครบ"
+      />
 
       <Section
         title="เห็นงานทั้งสำนักงาน ก่อนถึงกำหนด"
@@ -77,8 +84,9 @@ export default function PractiFlowPage() {
       </Section>
 
       <Section
-        title={`เริ่มใช้ ${p.name} ที่สำนักงานคุณ`}
-        description="เราใช้ระบบนี้บริหารงานสำนักงานของเราเอง และตอนนี้เปิดให้สำนักงานภายนอกใช้แล้ว แจ้งเราแล้วเราเปิดบัญชีทดลองใช้ฟรี 30 วันให้ ครบทุกฟีเจอร์ ไม่ต้องผูกบัตร หรือนัด demo 30 นาที เราจะตั้งค่าตัวอย่างจากงานจริงของสำนักงานคุณให้ดูเลย"
+        id="demo"
+        title={`นัด demo ${p.name} 30 นาที`}
+        description="เราใช้ระบบนี้บริหารงานสำนักงานของเราเอง และตอนนี้เปิดให้สำนักงานภายนอกใช้แล้ว นัดเวลาไว้แล้วเราจะตั้งค่าตัวอย่างจากงานจริงของสำนักงานคุณให้ดูเลย หรือถ้าอยากลองเองก่อน เริ่มทดลองฟรี 30 วันได้จากปุ่มด้านบน"
         tint
       >
         <DemoRequestForm productName={p.name} cloudOnly />

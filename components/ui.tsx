@@ -29,18 +29,22 @@ export function PageHero({
 }
 
 export function Section({
+  id,
   title,
   description,
   children,
   tint = false,
 }: {
+  /** ตั้งเมื่อมีลิงก์ในหน้าเดียวกันกระโดดมาที่ section นี้ (เช่น ปุ่ม "นัด demo" → ฟอร์มท้ายหน้า) */
+  id?: string;
   title?: string;
   description?: string;
   children: ReactNode;
   tint?: boolean;
 }) {
   return (
-    <section className={tint ? "bg-surface" : ""}>
+    /* scroll-mt เผื่อความสูงของ header ที่ sticky อยู่ ไม่ให้หัวข้อถูกบังตอนกระโดดมา */
+    <section id={id} className={`${tint ? "bg-surface" : ""} ${id ? "scroll-mt-16" : ""}`}>
       <div className="mx-auto max-w-6xl px-5 py-14 md:py-20">
         {title && (
           <h2 className="max-w-2xl text-2xl font-semibold tracking-tight md:text-3xl">
@@ -83,10 +87,13 @@ export function CTAButton({
   href,
   children,
   variant = "primary",
+  ariaLabel,
 }: {
   href: string;
   children: ReactNode;
   variant?: "primary" | "secondary" | "accent";
+  /** ใส่เมื่อข้อความบนปุ่มสั้นจนกำกวมถ้าอ่านแยกจากบล็อกรอบ ๆ (เช่น "สมัครใช้งาน" หลายปุ่มในหน้าเดียว) */
+  ariaLabel?: string;
 }) {
   const styles =
     variant === "primary"
@@ -94,13 +101,52 @@ export function CTAButton({
       : variant === "accent"
         ? "bg-accent-ink text-card hover:opacity-85"
         : "border border-line bg-card hover:bg-surface";
+  const className = `inline-flex items-center justify-center rounded-lg px-5 py-2.5 text-[15px] font-medium transition-all ${styles}`;
+
+  /* ปุ่มที่ชี้ออกนอกเว็บ (พอร์ทัลสมัครใช้งาน อยู่คนละ origin) ใช้ <a> ตรง ๆ
+     next/link ไม่มีอะไรให้ prefetch ข้าม origin อยู่แล้ว — เปิดแท็บเดิมเหมือนการกดเข้าหน้าชำระเงินทั่วไป */
+  if (/^https?:\/\//.test(href)) {
+    return (
+      <a href={href} aria-label={ariaLabel} className={className}>
+        {children}
+      </a>
+    );
+  }
+
   return (
-    <Link
-      href={href}
-      className={`inline-flex items-center justify-center rounded-lg px-5 py-2.5 text-[15px] font-medium transition-all ${styles}`}
-    >
+    <Link href={href} aria-label={ariaLabel} className={className}>
       {children}
     </Link>
+  );
+}
+
+/**
+ * แถวปุ่มใต้ hero ของหน้า product — ทางสมัครด้วยตัวเอง คู่กับทางนัด demo ที่มีอยู่เดิม
+ * ปุ่ม demo กระโดดไปที่ฟอร์มท้ายหน้าเดิม ไม่ได้แทนที่มัน
+ */
+export function ProductActions({
+  signupHref,
+  signupAriaLabel,
+  demoHref,
+  note,
+}: {
+  signupHref: string;
+  signupAriaLabel: string;
+  demoHref: string;
+  note: string;
+}) {
+  return (
+    <div className="mx-auto max-w-6xl px-5 pt-7">
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+        <CTAButton href={signupHref} ariaLabel={signupAriaLabel}>
+          สมัครใช้งาน
+        </CTAButton>
+        <CTAButton href={demoHref} variant="secondary">
+          นัด demo 30 นาที
+        </CTAButton>
+      </div>
+      <p className="mt-3.5 max-w-[60ch] text-sm leading-relaxed text-muted">{note}</p>
+    </div>
   );
 }
 
@@ -155,6 +201,7 @@ export function PlanRow({
   sub,
   /** เปลี่ยนค่านี้เมื่อราคาเปลี่ยน เพื่อให้ตัวเลขเล่น animation ใหม่ */
   priceKey,
+  action,
 }: {
   name: string;
   scope: string;
@@ -162,6 +209,12 @@ export function PlanRow({
   unit?: string;
   sub?: string;
   priceKey?: string;
+  /**
+   * ปุ่มลงมือของแถวนั้น (เช่น "สมัคร") — เป็นลิงก์ตัวอักษรไม่ใช่ปุ่มทึบ
+   * เพื่อให้ ledger ยังอ่านเป็นตารางค่าบริการ ไม่กลายเป็นการ์ดราคาเรียงกัน
+   * `label` สั้นได้เพราะ `ariaLabel` เป็นตัวบอกบริบทเต็มให้ screen reader
+   */
+  action?: { href: string; label: string; ariaLabel: string };
 }) {
   return (
     <li className="col-span-2 grid grid-cols-subgrid items-baseline gap-x-6 border-t border-line px-5 py-4 transition-colors first:border-t-0 hover:bg-surface/60 md:px-7 md:py-5">
@@ -181,6 +234,17 @@ export function PlanRow({
           {unit && <span className="ml-1 text-sm font-normal text-muted">{unit}</span>}
         </p>
         {sub && <p className="mt-1 text-sm tabular-nums text-muted">{sub}</p>}
+        {action && (
+          <a
+            href={action.href}
+            aria-label={action.ariaLabel}
+            /* py-2 ให้พื้นที่กดสูงราว 36px — แถวสูงขึ้นเล็กน้อยแต่กดถูกบนมือถือจริง */
+            className="mt-1 inline-flex items-center gap-1 py-2 text-sm font-medium text-accent-ink underline-offset-4 hover:underline"
+          >
+            {action.label}
+            <span aria-hidden>→</span>
+          </a>
+        )}
       </div>
     </li>
   );
