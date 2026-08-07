@@ -39,16 +39,6 @@ export const company = {
   auditorLicenseNumber: "13466",
 };
 
-/**
- * ทางเข้าใช้งานของ product หนึ่งตัว — สองแบบ เพราะสองระบบวางที่อยู่ไว้ต่างกัน (สเปก §2)
- *   shared   = ทุกสำนักงานเข้าที่อยู่เดียวกัน แล้วระบบแยกข้อมูลด้วยบัญชีผู้ใช้
- *   per-firm = แต่ละสำนักงานมีที่อยู่ของตัวเอง เว็บบอกได้แค่รูปแบบ ไม่รู้ที่อยู่ของใคร
- */
-export type ProductAccess =
-  | { kind: "shared"; url: string }
-  /** แยกเป็นสองส่วนเพื่อให้หน้า /login เน้นเฉพาะท่อนที่ผู้ใช้ต้องแทนด้วยชื่อของตัวเองได้ */
-  | { kind: "per-firm"; slugLabel: string; baseDomain: string };
-
 export const products = {
   auditflow: {
     name: "AuditFlow",
@@ -57,15 +47,11 @@ export const products = {
     description:
       "จัดการงานตรวจสอบตั้งแต่วางแผนจนออกหน้ารายงาน รวมกระดาษทำการ Lead Schedule Materiality Cal Tax และงบการเงิน NPAE ไว้ในที่เดียว",
     /**
-     * AuditFlow เสิร์ฟแยกที่อยู่ต่อสำนักงาน (`<slug>.ca-professional.com` — สเปก §2)
-     * จึงไม่มี URL กลางให้กดเข้าใช้งานได้ทันที และเว็บนี้ไม่มีทะเบียนลูกค้าให้ค้นด้วย
-     * ที่อยู่จริงของแต่ละสำนักงานอยู่ในอีเมลตอนเปิดสิทธิ — หน้า /login จึงบอกรูปแบบไว้
+     * ชั่วคราว: AuditFlow เสิร์ฟแยกที่อยู่ต่อสำนักงาน (`<slug>.ca-professional.com` — สเปก §2)
+     * จึงยังไม่มี URL กลางให้กดเข้าใช้งานได้ทันที ระหว่างนี้ปุ่มบนหน้า /login ชี้ไปพอร์ทัลไปก่อน
+     * เมื่อมีหน้า login กลางแล้ว เปลี่ยนบรรทัดนี้บรรทัดเดียว หน้า /login ตามเอง
      */
-    access: {
-      kind: "per-firm",
-      slugLabel: "ชื่อสำนักงานของคุณ",
-      baseDomain: "ca-professional.com",
-    },
+    loginUrl: portalUrl,
   },
   practiflow: {
     name: "PractiFlow",
@@ -74,9 +60,9 @@ export const products = {
     description:
       "ติดตามงานทุกลูกค้า ทุก deadline ทุกใบแจ้งหนี้ เห็นภาพรวมทั้งสำนักงานในหน้าจอเดียว",
     /** PractiFlow แยกข้อมูลแบบ row-level จึงอยู่ host เดียวทั้งระบบ (สเปก §2 ตาราง DNS) */
-    access: { kind: "shared", url: "https://pm.ca-professional.com" },
+    loginUrl: "https://pm.ca-professional.com",
   },
-} satisfies Record<string, { access: ProductAccess } & Record<string, unknown>>;
+} satisfies Record<string, { loginUrl: string } & Record<string, unknown>>;
 
 export type ProductKey = keyof typeof products;
 
