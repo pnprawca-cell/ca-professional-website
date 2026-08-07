@@ -18,6 +18,12 @@ typography:
     fontWeight: 600
     lineHeight: 1.15
     letterSpacing: "-0.025em"
+  price:
+    fontFamily: "Anuphan, 'Segoe UI', sans-serif"
+    fontSize: "clamp(2rem, 4vw, 2.75rem)"
+    fontWeight: 600
+    lineHeight: 1.05
+    letterSpacing: "-0.03em"
   headline:
     fontFamily: "Anuphan, 'Segoe UI', sans-serif"
     fontSize: "clamp(1.5rem, 3vw, 1.875rem)"
@@ -141,6 +147,7 @@ A warm, low-chroma neutral field carrying one saturated terracotta — the close
 
 ### Hierarchy
 - **Display** (600, `clamp(2.25rem, 5vw, 3.75rem)`, line-height 1.15, tracking -0.025em): Hero and page-title H1 only. `text-wrap: balance`.
+- **Price** (600, `clamp(2rem, 4vw, 2.75rem)`, line-height 1.05, tracking -0.03em, `tabular-nums`): Utility `text-price`. **Numerals only, never a heading.** Reserved for the one amount that is the point of its block — the audit starting fee, a lead plan's price. It deliberately outranks Headline so a price never loses to the section title above it. Deeper in a table, prices step down to 1.25rem (`text-xl`).
 - **Headline** (600, `clamp(1.5rem, 3vw, 1.875rem)`, line-height 1.25): Section H2.
 - **Title** (600, 1.125rem, line-height 1.4): Card H3 and small block headings.
 - **Body** (400, 0.9375–1.125rem, line-height 1.625): Paragraphs and supporting copy. Cap measure at 65–75ch (`max-w-2xl` / `max-w-3xl`). Use the larger 1.125rem for lead paragraphs under a hero, 0.9375rem for in-card and dense copy.
@@ -194,6 +201,17 @@ A terracotta value-marker: a 20px Terracotta Wash circle holding a 1.6px-stroke 
 ### Hero Pill (signature)
 A `rounded-full` Terracotta Wash chip with Terracotta Seal text (0.875rem, weight 500), holding the company tagline above the hero headline. One per page, at the top of the hero only.
 
+### Plan Ledger (signature)
+The system's answer to pricing — a **fee schedule, not a card grid**. `PlanLedger` / `PlanRow` in `components/ui.tsx`.
+
+- **Structure:** a Pure Card container with a Dune Line hairline between rows. Each row is plan name + scope on the left, amount + unit right-aligned on the right, joined by a **dotted Dune Line leader** (an `h-0` span whose bottom border lands on the name's baseline).
+- **Column discipline:** the `<ul>` owns `grid-template-columns`; each `<li>` re-enters it with `grid-cols-subgrid`. This is load-bearing, not stylistic — it is what makes the price column one shared width so digits align down the page. `tabular-nums` alone does not do this, because each row would otherwise measure itself. Free tiers keep the billing unit ("฿0 / เดือน") so their digits stay in the column.
+- **Hierarchy inside a section:** one **lead plan** gets a full-width block above the ledger (Price type, a Terracotta Seal hairline border, CheckItem reasons, optionally the CTA); every other plan stays in the compact ledger. Emphasis comes from that contrast.
+- **Never** express plans as a row of same-sized cards with a scaled-up "popular" one. That is the SaaS template PRODUCT.md rejects, and it collides with the identical-card-grid ban.
+
+### Billing Toggle
+A `rounded-full` Pure Card segmented control with a Dune Line border and a Near-Black Ink pill that slides on `transform` only (300ms, `cubic-bezier(0.22, 1, 0.36, 1)`). Label colors transition over the same 300ms so no label sits ivory-on-white while the pill travels. Wired as a `role="radiogroup"` with `aria-checked`. Amounts re-key on change and play `animate-price-in` (280ms rise + fade); both the slide and the rise are dropped under `prefers-reduced-motion: reduce`. This is the one moment of motion on the pricing page — it exists because it turns a footnote ("รายปีจ่ายเท่า 10 เดือน") into a visible mechanic, not for decoration.
+
 ## 6. Do's and Don'ts
 
 ### Do:
@@ -202,7 +220,8 @@ A `rounded-full` Terracotta Wash chip with Terracotta Seal text (0.875rem, weigh
 - **Do** build hierarchy with Near-Black Ink and Anuphan weight/size before reaching for the accent.
 - **Do** convey depth by stepping tone (Ivory → Oat → Pure Card) with 1px Dune Line hairlines, not shadow.
 - **Do** keep body measure at 65–75ch and lean on Anuphan's Thai legibility (line-height ~1.625).
-- **Do** use the CheckItem and Hero Pill as the signature accent moments; prefer them over generic bullets/badges.
+- **Do** use the CheckItem, Hero Pill, and Plan Ledger as the signature moments; prefer them over generic bullets, badges, and card grids.
+- **Do** set the one amount a block is about in Price type — a price that reads smaller than the section heading above it has lost the page.
 - **Do** provide a visible `:focus-visible` state (accent border/ring) on every interactive control.
 
 ### Don't:
@@ -213,5 +232,6 @@ A `rounded-full` Terracotta Wash chip with Terracotta Seal text (0.875rem, weigh
 - **Don't** use gradient text (`background-clip: text`), colored side-stripe borders (`border-left`>1px as an accent), or decorative glassmorphism — all forbidden.
 - **Don't** add a resting drop-shadow to cards or surfaces; shadow is a hover response only (The Flat-By-Default Rule).
 - **Don't** introduce a second font family; if something needs more presence, add weight or size (The One-Voice Rule).
+- **Don't** turn plans into a row of identical cards with a scaled-up "popular" one, and don't bury the reasons to buy (free-trial terms, annual saving, early-access windows) in a gray footnote list. Use the Plan Ledger's lead-plan contrast instead.
 - **Don't** lighten Stone Gray (`#63605b`) for "elegance" — it's at the AA floor already; go toward Ink instead.
 - **Don't** put text — or a filled button with text on it — on Terracotta Seal (`#c96442`); it lands at ~3.2–3.9:1 and fails AA. Use Terracotta Ink (`#a34a24`) for anything readable.

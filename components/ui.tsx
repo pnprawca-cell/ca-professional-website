@@ -85,12 +85,14 @@ export function CTAButton({
 }: {
   href: string;
   children: ReactNode;
-  variant?: "primary" | "secondary";
+  variant?: "primary" | "secondary" | "accent";
 }) {
   const styles =
     variant === "primary"
       ? "bg-foreground text-background hover:opacity-85"
-      : "border border-line bg-card hover:bg-surface";
+      : variant === "accent"
+        ? "bg-accent-ink text-white hover:opacity-85"
+        : "border border-line bg-card hover:bg-surface";
   return (
     <Link
       href={href}
@@ -127,6 +129,59 @@ export function CTABanner({
         </Link>
       </div>
     </section>
+  );
+}
+
+/**
+ * ตารางราคาแบบ "ใบแจ้งค่าบริการ" — ชื่อแผนซ้าย เส้นประเชื่อม ตัวเลขขวา
+ * ตัว <ul> เป็น grid เจ้าของคอลัมน์ ส่วนแต่ละแถวใช้ grid-cols-subgrid
+ * เพื่อให้คอลัมน์ราคาของทุกแถวกว้างเท่ากันจริง — หลักตัวเลขจึงตรงกันลงมาทั้งคอลัมน์
+ * (tabular-nums อย่างเดียวไม่พอ เพราะแต่ละแถวจะวัดความกว้างของตัวเองแยกกัน)
+ */
+export function PlanLedger({ children }: { children: ReactNode }) {
+  return (
+    <ul className="grid grid-cols-[minmax(0,1fr)_auto] overflow-hidden rounded-2xl border border-line bg-card">
+      {children}
+    </ul>
+  );
+}
+
+export function PlanRow({
+  name,
+  scope,
+  amount,
+  unit,
+  sub,
+  /** เปลี่ยนค่านี้เมื่อราคาเปลี่ยน เพื่อให้ตัวเลขเล่น animation ใหม่ */
+  priceKey,
+}: {
+  name: string;
+  scope: string;
+  amount: string;
+  unit?: string;
+  sub?: string;
+  priceKey?: string;
+}) {
+  return (
+    <li className="col-span-2 grid grid-cols-subgrid items-baseline gap-x-6 border-t border-line px-5 py-4 transition-colors first:border-t-0 hover:bg-surface/60 md:px-7 md:py-5">
+      <div className="min-w-0">
+        <div className="flex items-baseline gap-3">
+          <p className="font-semibold tracking-tight">{name}</p>
+          {/* เส้นประเชื่อมชื่อแผนกับราคา แบบตารางค่าบริการ
+              กล่องสูง 0 จึงถูกจัดให้ขอบล่างตกที่ baseline ของชื่อแผนพอดี */}
+          <span aria-hidden className="h-0 flex-1 border-b border-dotted border-line" />
+        </div>
+        <p className="mt-1 text-[15px] leading-relaxed text-muted">{scope}</p>
+      </div>
+      {/* จำกัดความกว้างบนจอเล็ก ไม่ให้บรรทัดรอง (ราคาอีกรอบบิล) ดูดคอลัมน์ไปจนเส้นประหาย */}
+      <div className="max-w-[9.5rem] text-right md:max-w-none">
+        <p key={priceKey} className="animate-price-in tabular-nums motion-reduce:animate-none">
+          <span className="text-xl font-semibold tracking-tight">{amount}</span>
+          {unit && <span className="ml-1 text-sm font-normal text-muted">{unit}</span>}
+        </p>
+        {sub && <p className="mt-1 text-sm tabular-nums text-muted">{sub}</p>}
+      </div>
+    </li>
   );
 }
 
