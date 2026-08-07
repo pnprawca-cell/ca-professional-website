@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { company } from "@/content/site";
 import { hasFormBackend, submitLead } from "@/lib/submitLead";
 
@@ -12,7 +12,7 @@ const interests = [
 ];
 
 const inputClass =
-  "w-full rounded-lg border border-line bg-card px-4 py-2.5 text-[15px] outline-none transition-colors focus:border-accent";
+  "w-full rounded-lg border border-line bg-card px-4 py-2.5 text-[15px] outline-none transition-colors placeholder:text-muted focus:border-accent";
 
 type Status = "idle" | "sending" | "success" | "error" | "sent-mailto";
 
@@ -26,6 +26,14 @@ export default function ContactForm() {
     message: "",
   });
   const [status, setStatus] = useState<Status>("idle");
+  const successHeadingRef = useRef<HTMLHeadingElement>(null);
+  const isSuccess = status === "success";
+
+  /* บล็อกสำเร็จมาแทนที่ทั้งฟอร์ม ปุ่มส่งที่ถือโฟกัสอยู่จึงหายไปและโฟกัสตกไปที่ body
+     ย้ายโฟกัสมาที่หัวข้อเพื่อให้ screen reader อ่านผลลัพธ์ต่อจากจุดเดิม */
+  useEffect(() => {
+    if (isSuccess) successHeadingRef.current?.focus();
+  }, [isSuccess]);
 
   const set = (key: keyof typeof form) => (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -71,9 +79,9 @@ export default function ContactForm() {
     }
   }
 
-  if (status === "success") {
+  if (isSuccess) {
     return (
-      <div className="rounded-2xl border border-line bg-card p-7">
+      <div role="status" className="rounded-2xl border border-line bg-card p-7">
         <div className="flex items-start gap-3">
           <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent-soft">
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
@@ -81,7 +89,9 @@ export default function ContactForm() {
             </svg>
           </span>
           <div>
-            <h3 className="font-semibold">ได้รับข้อมูลของคุณแล้ว</h3>
+            <h3 ref={successHeadingRef} tabIndex={-1} className="font-semibold">
+              ได้รับข้อมูลของคุณแล้ว
+            </h3>
             <p className="mt-1.5 text-[15px] leading-relaxed text-muted">
               ขอบคุณครับ ทีมงานจะติดต่อกลับภายใน 1 วันทำการ — ถ้าเรื่องด่วน ทัก{" "}
               <a href={company.lineUrl} target="_blank" rel="noopener noreferrer" className="font-medium text-accent-ink hover:underline">

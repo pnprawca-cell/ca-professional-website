@@ -8,6 +8,7 @@ import { nav, company } from "@/content/site";
 export default function Header() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const isActive = (href: string) => pathname.startsWith(href);
 
   return (
     <header className="sticky top-0 z-50 border-b border-line bg-background/90 backdrop-blur">
@@ -26,8 +27,9 @@ export default function Header() {
             <Link
               key={item.href}
               href={item.href}
+              aria-current={isActive(item.href) ? "page" : undefined}
               className={`rounded-lg px-3 py-2 text-sm transition-colors hover:bg-surface ${
-                pathname.startsWith(item.href) ? "font-semibold" : "text-muted"
+                isActive(item.href) ? "font-semibold" : "text-muted"
               }`}
             >
               {item.label}
@@ -70,7 +72,10 @@ export default function Header() {
               key={item.href}
               href={item.href}
               onClick={() => setOpen(false)}
-              className="block rounded-lg px-3 py-2.5 text-[15px] hover:bg-surface"
+              aria-current={isActive(item.href) ? "page" : undefined}
+              className={`block rounded-lg px-3 py-2.5 text-[15px] hover:bg-surface ${
+                isActive(item.href) ? "font-semibold" : "text-muted"
+              }`}
             >
               {item.label}
             </Link>

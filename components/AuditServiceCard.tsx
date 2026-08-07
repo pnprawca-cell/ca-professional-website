@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useState } from "react";
 
 const specialties = [
   "ผลิต",
@@ -14,7 +14,6 @@ const specialties = [
 
 export function AuditServiceCard() {
   const [open, setOpen] = useState(false);
-  const contentRef = useRef<HTMLDivElement>(null);
 
   return (
     <div className="overflow-hidden rounded-2xl border border-line bg-card transition-shadow hover:shadow-sm">
@@ -65,22 +64,27 @@ export function AuditServiceCard() {
         </button>
       </div>
 
-      {/* motion: แตกคำอธิบายเมื่อคลิก — ใช้ height แบบวัดจริง (รองรับทุกเบราว์เซอร์) */}
+      {/* motion: แตกคำอธิบายเมื่อคลิก — ย่อ/ขยายด้วย grid-template-rows 0fr→1fr
+          ไม่ต้องวัดความสูง จึงไหลตามข้อความใหม่เสมอเมื่อ resize หรือฟอนต์โหลดเสร็จ */}
       <div
         id="audit-detail"
         role="region"
         aria-label="แนวการทำงาน"
-        style={{ height: open ? contentRef.current?.scrollHeight ?? undefined : 0 }}
-        className={`overflow-hidden transition-[height,opacity] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
-          open ? "opacity-100" : "opacity-0"
+        inert={!open}
+        className={`grid transition-[grid-template-rows,opacity] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none ${
+          open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
         }`}
       >
-        <div ref={contentRef} className="mx-6 border-t border-line pb-6 pt-5 md:mx-8 md:pb-8">
-          <p className="text-[15px] leading-relaxed text-foreground">
-            ผู้สอบบัญชีของเราลงลึกในลักษณะเฉพาะของแต่ละอุตสาหกรรม อ่านงบได้ตรงประเด็น
-            ไม่ใช่แค่เซ็นชื่อรับรอง ครอบคลุมถึงกิจการที่ได้รับส่งเสริมการลงทุน (BOI)
-            พร้อมอธิบายทุกประเด็นและรายการปรับปรุงให้เข้าใจได้จริง
-          </p>
+        {/* min-h-0 + overflow-hidden คือเงื่อนไขที่ทำให้แถวยุบเหลือ 0 ได้จริง
+            และตัวนี้ต้องไม่มี padding/border เอง ไม่งั้นความสูงจะไม่เป็นศูนย์ */}
+        <div className="min-h-0 overflow-hidden">
+          <div className="mx-6 border-t border-line pb-6 pt-5 md:mx-8 md:pb-8">
+            <p className="text-[15px] leading-relaxed text-foreground">
+              ผู้สอบบัญชีของเราลงลึกในลักษณะเฉพาะของแต่ละอุตสาหกรรม อ่านงบได้ตรงประเด็น
+              ไม่ใช่แค่เซ็นชื่อรับรอง ครอบคลุมถึงกิจการที่ได้รับส่งเสริมการลงทุน (BOI)
+              พร้อมอธิบายทุกประเด็นและรายการปรับปรุงให้เข้าใจได้จริง
+            </p>
+          </div>
         </div>
       </div>
     </div>

@@ -72,6 +72,13 @@ export default function RootLayout({
   return (
     <html lang="th" className={`${anuphan.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
+        {/* fixed + z สูงกว่า header (z-50) เพราะ header เป็น sticky ที่สร้าง stacking context ของตัวเอง */}
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60] focus:rounded-lg focus:border focus:border-line focus:bg-card focus:px-4 focus:py-2.5 focus:text-sm focus:font-medium focus:text-foreground"
+        >
+          ข้ามไปเนื้อหาหลัก
+        </a>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -79,7 +86,9 @@ export default function RootLayout({
           }}
         />
         <Header />
-        <main className="flex-1">{children}</main>
+        <main id="main" className="flex-1">
+          {children}
+        </main>
         <Footer />
       </body>
     </html>

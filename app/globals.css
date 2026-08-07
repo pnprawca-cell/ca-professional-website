@@ -1,6 +1,11 @@
 @import "tailwindcss";
 
 :root {
+  /* ระบบสีเป็น light อย่างเดียวโดยตั้งใจ (ดู DESIGN.md) — ประกาศไว้เพื่อให้
+     native control ของเบราว์เซอร์ (select, checkbox, scrollbar) เรนเดอร์แบบ light
+     ตามพื้นครีมของเว็บ แม้ OS จะตั้งค่าเป็น dark */
+  color-scheme: light;
+
   /* Claude-inspired palette: warm ivory, dark ink, terracotta accent */
   --background: #faf9f5;
   --surface: #f0eee6;
