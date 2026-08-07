@@ -22,10 +22,7 @@ const apps = [
 export default function LoginPage() {
   return (
     <>
-      <PageHero
-        title="เลือกระบบที่ต้องการเข้าใช้งาน"
-        description="สำหรับผู้ใช้รุ่น Online — รุ่น Desktop ของ AuditFlow เปิดจากโปรแกรมที่ติดตั้งในเครื่องได้เลย"
-      />
+      <PageHero title="เลือกระบบที่ต้องการเข้าใช้งาน" />
 
       <Section>
         <div className="grid gap-5 md:grid-cols-2">

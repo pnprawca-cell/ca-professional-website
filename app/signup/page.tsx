@@ -118,32 +118,23 @@ export default function SignupPage() {
       <Section title="เรื่องเงินและเอกสารทางภาษี">
         <ul className="grid max-w-[70ch] gap-4">
           <CheckItem>
-            <strong className="font-semibold text-foreground">หัก ณ ที่จ่าย 3% ได้ตามปกติ</strong> —
-            ใบแจ้งหนี้แสดงยอดโอนสุทธิหลังหักไว้ให้แล้ว โอนตามยอดนั้นได้เลย
-            แล้วส่งหนังสือรับรองการหักภาษีมาให้เราตามรอบ
-          </CheckItem>
-          <CheckItem>
-            <strong className="font-semibold text-foreground">ได้ใบกำกับภาษีเต็มจำนวน</strong> —
-            ออกในชื่อนิติบุคคลของสำนักงานคุณ พร้อมใบเสร็จรับเงินตามมาตรา 86/4 ส่งให้ทางอีเมลตอนที่เราอนุมัติ
-          </CheckItem>
-          <CheckItem>
             ราคาทุกแผนบนหน้า{" "}
             <Link href="/pricing" className="font-medium text-accent-ink hover:underline">
               ราคา
             </Link>{" "}
-            ยังไม่รวม VAT 7% ระบบคำนวณและแสดงยอดรวมให้ในใบแจ้งหนี้
+            ยังไม่รวม VAT 7%
           </CheckItem>
           <CheckItem>
-            ตอนนี้ชำระด้วยการโอนเท่านั้น ยังไม่รับบัตรเครดิตและยังไม่มีการตัดเงินอัตโนมัติ —
-            ถึงรอบต่ออายุเราส่งใบแจ้งหนี้ใบใหม่ไปให้ก่อนล่วงหน้า
+            หัก ณ ที่จ่าย 3% ได้ตามปกติ ใบแจ้งหนี้แสดงยอดโอนสุทธิไว้ให้แล้ว
+            และได้ใบกำกับภาษีเต็มจำนวนในชื่อนิติบุคคลของสำนักงานคุณ
           </CheckItem>
+          <CheckItem>ตอนนี้รับโอนอย่างเดียว ยังไม่มีการตัดเงินอัตโนมัติ</CheckItem>
         </ul>
 
         <p className="mt-8 max-w-[68ch] text-sm leading-relaxed text-muted">
-          ขั้นตอนสมัครและการแนบสลิปทำที่ระบบของเราที่{" "}
+          ขั้นตอนสมัครและการแนบสลิปทำที่{" "}
           <span className="font-medium text-foreground">{portalUrl.replace("https://", "")}</span>{" "}
-          ซึ่งเป็นคนละระบบกับเว็บไซต์นี้และตั้งอยู่ในประเทศไทย เว็บไซต์นี้ไม่เก็บข้อมูลการสมัครและไม่รับไฟล์สลิป —
-          รายละเอียดอยู่ใน{" "}
+          ซึ่งเป็นคนละระบบกับเว็บไซต์นี้ — ดู{" "}
           <Link href="/legal/privacy" className="font-medium text-accent-ink hover:underline">
             นโยบายความเป็นส่วนตัว
           </Link>
