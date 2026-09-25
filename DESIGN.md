@@ -236,3 +236,16 @@ A `rounded-full` Pure Card segmented control with a Dune Line border and a Near-
 - **Don't** turn plans into a row of identical cards with a scaled-up "popular" one, and don't bury the reasons to buy (free-trial terms, annual saving, early-access windows) in a gray footnote list. Use the Plan Ledger's lead-plan contrast instead.
 - **Don't** lighten Stone Gray (`#63605b`) for "elegance" — it's at the AA floor already; go toward Ink instead.
 - **Don't** put text — or a filled button with text on it — on Terracotta Seal (`#c96442`); it lands at ~3.2–3.9:1 and fails AA. Use Terracotta Ink (`#a34a24`) for anything readable.
+
+## 7. Homepage marketing layout (approved 25 Sep 2569)
+
+The homepage (`app/page.tsx`) was redesigned to a layout the owner supplied and approved: modern, image-led, card-based. It **deliberately departs** from parts of sections 1–6. The exceptions below apply to the homepage only; every other page still follows the rules above until it is migrated on purpose.
+
+- **Resting soft shadow:** surfaces that float (cards, feature pills, the CPA badge, industry tiles) carry the `lift` shadow at rest (`0 1px 2px rgb(31 30 29/.04), 0 16px 40px -20px rgb(31 30 29/.18)`). Cards also rise 4px on hover.
+- **Terracotta Ink fills beyond the One Seal Rule:** each audience card has its own filled CTA (Terracotta Ink or Ink), and the hero headline carries one Terracotta Ink word ("เทคโนโลยี"). Terracotta Seal still never carries text.
+- **English kickers:** Latin-only section kickers ("AUDIT × TECHNOLOGY × REAL EXPERIENCE", "WHY CA PROFESSIONAL") use `uppercase` + `tracking-[0.2em]` in Terracotta Ink. This is safe because the text is Latin; **never** apply it to Thai text (see the Eyebrow rule in section 3).
+- **Photography:** real photos (Unsplash License), stored locally in `public/images/home/` and rendered with `next/image` (`fill`, `sizes`, blur placeholder). No photo has a person as its subject; the owner chose no people in the hero. Industry tiles put white text over a `from-black/75` gradient for contrast.
+- **Icons:** a small hand-drawn stroke set in `components/home/Icons.tsx` (1.75 stroke, `currentColor`), shown in Terracotta Wash tiles. Do not add an icon library for a few glyphs.
+- **Product drawings stay truthful:** `ProductPeek`, `CalTaxShot` and `LaptopShot` all show the same engagement, and their numbers tie. Keep them tied when editing.
+- **Content guardrails:** no testimonials; the only confirmed count is "กว่า 200 บริษัท"; do not add years of experience or other unconfirmed figures.
+

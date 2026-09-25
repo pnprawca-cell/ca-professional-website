@@ -24,7 +24,7 @@
 
 ## Sitemap (v1)
 ```
-/                       หน้าแรก — 3 เสาหลัก + ทำไมต้องเรา + CTA
+/                       หน้าแรก — hero + 3 การ์ด (สอบบัญชี/AuditFlow/PractiFlow) + AuditFlow + 6 ขั้นตอน + ทำไมต้องเรา + ธุรกิจที่เราดูแล + CTA (ปรับ 25 ก.ย. 2569)
 /services/audit         บริการสอบบัญชี (บริการ, ขั้นตอน, เหมาะกับใคร)
 /products/auditflow     AuditFlow — Audit Platform (ฟีเจอร์, Online/Offline)
 /products/practiflow    PractiFlow — Practice Management (ฟีเจอร์, รุ่น Cloud อย่างเดียว)
