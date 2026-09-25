@@ -2,7 +2,6 @@ import Image, { type StaticImageData } from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import ProductPeek from "@/components/ProductPeek";
-import { CalTaxShot } from "@/components/AuditFlowShots";
 import { LaptopShot } from "@/components/home/Visuals";
 import {
   IconArrowRight,
@@ -182,10 +181,10 @@ export default function Home() {
     <>
       {/* ═══ HERO ═══ */}
       <section className="relative overflow-hidden bg-gradient-to-b from-background to-surface/60">
-        <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 pb-16 pt-14 md:pt-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-8 lg:pb-24">
+        <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 pb-16 pt-14 md:pt-20 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] lg:gap-8 lg:pb-24">
           <div className="relative z-10 max-w-xl">
             <Kicker>Audit × Technology × Real Experience</Kicker>
-            <h1 className="mt-5 text-4xl font-bold leading-[1.15] tracking-tight sm:text-5xl lg:text-6xl">
+            <h1 className="mt-5 text-4xl font-bold leading-[1.15] tracking-tight sm:text-5xl xl:text-6xl">
               {/* ห่อวลีด้วย inline-block กันเบราว์เซอร์ตัดกลางคำไทย ("สอบ/บัญชี") */}
               <span className="inline-block">สำนักงานสอบบัญชีไทย</span>{" "}
               <span className="inline-block">
@@ -211,7 +210,7 @@ export default function Home() {
 
       {/* ═══ 3 เสาหลัก ═══ */}
       <section className="relative">
-        <div className="mx-auto grid max-w-7xl gap-6 px-5 py-16 md:grid-cols-3 md:py-20">
+        <div className="mx-auto grid max-w-6xl gap-6 px-5 py-16 md:grid-cols-3 md:py-20">
           {pillars.map((p) => (
             <article
               key={p.name}
@@ -262,7 +261,7 @@ export default function Home() {
           aria-hidden
           className="pointer-events-none absolute left-1/2 top-1/2 h-[520px] w-[720px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(closest-side,rgb(255_255_255/0.9),transparent)]"
         />
-        <div className="relative mx-auto grid max-w-7xl grid-cols-1 items-center gap-12 px-5 py-16 md:py-24 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.3fr)_minmax(0,0.75fr)] lg:gap-10">
+        <div className="relative mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-5 py-16 md:py-24 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1.2fr)_minmax(0,0.85fr)] lg:gap-10">
           <div>
             <Kicker>AuditFlow</Kicker>
             <h2 className="mt-4 text-3xl font-bold leading-tight tracking-tight md:text-4xl">
@@ -302,7 +301,7 @@ export default function Home() {
 
       {/* ═══ ขั้นตอนงาน ═══ */}
       <section aria-labelledby="flow-title" className="border-b border-line bg-card">
-        <div className="mx-auto max-w-7xl px-5 py-14">
+        <div className="mx-auto max-w-6xl px-5 py-14">
           <h2 id="flow-title" className="sr-only">
             ขั้นตอนงานสอบบัญชีใน AuditFlow
           </h2>
@@ -330,7 +329,7 @@ export default function Home() {
 
       {/* ═══ ทำไมต้องเลือกเรา ═══ */}
       <section className="bg-accent-soft/35">
-        <div className="mx-auto grid max-w-7xl items-center gap-10 px-5 py-14 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-12">
+        <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 py-14 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-12">
           <div>
             <Kicker>Why CA Professional</Kicker>
             <h2 className="mt-3 text-3xl font-bold tracking-tight">ทำไมต้องเลือกเรา</h2>
@@ -349,7 +348,7 @@ export default function Home() {
 
       {/* ═══ ธุรกิจที่เราดูแล (แทนรีวิว) ═══ */}
       <section>
-        <div className="mx-auto grid max-w-7xl gap-10 px-5 py-16 md:py-20 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-12">
+        <div className="mx-auto grid max-w-6xl gap-10 px-5 py-16 md:py-20 lg:grid-cols-[15rem_minmax(0,1fr)] lg:gap-12">
           <div>
             <Kicker>Industries We Serve</Kicker>
             <h2 className="mt-3 text-3xl font-bold tracking-tight">ธุรกิจที่เราดูแล</h2>
@@ -391,7 +390,7 @@ export default function Home() {
           aria-hidden
           className="pointer-events-none absolute inset-0 opacity-[0.07] [background-image:linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] [background-size:48px_48px] [mask-image:linear-gradient(to_left,black,transparent_70%)]"
         />
-        <div className="relative mx-auto flex max-w-7xl flex-col gap-10 px-5 py-16 md:py-20 lg:flex-row lg:items-center lg:justify-between">
+        <div className="relative mx-auto flex max-w-6xl flex-col gap-10 px-5 py-16 md:py-20 lg:flex-row lg:items-center lg:justify-between">
           <div>
             <Kicker light>Let&apos;s Work Together</Kicker>
             <h2 className="mt-4 text-3xl font-bold tracking-tight text-background md:text-4xl">
@@ -414,43 +413,34 @@ export default function Home() {
 }
 
 /**
- * ภาพ hero — แทนรูปคนในภาพตัวอย่างด้วยหน้าจองานจริงสองจอซ้อนกัน
+ * ภาพ hero — หน้าจอ Lead Schedule จอเดียว วางตรง ไม่มีกรอบเทาซ้อน
  * + ป้ายผู้สอบบัญชีรับอนุญาต (ตำแหน่งเดียวกับป้ายชื่อในภาพตัวอย่าง)
+ *
+ * ป้ายวางใต้หน้าจอแบบเยื้องขวา ไม่ทับหน้าจอเลย: แถบล่างของ ProductPeek มีข้อความทั้งซ้ายและขวา
+ * ทับตรงไหนก็บังเนื้อหา (เคยลองทับแล้วดูเหมือนชนกัน — 25 ก.ย. 2569)
  */
 function HeroVisual() {
   return (
-    <div className="relative">
-      {/* พื้นหลังไล่สี + จุดตาราง */}
+    <div className="relative px-4 py-8 sm:px-8 lg:px-7 lg:py-9">
+      {/* พื้นหลัง: แผ่นไล่สีที่มีมุมครบทั้งสี่ อยู่ในคอลัมน์ของตัวเอง + จุดตารางจาง ๆ */}
       <div
         aria-hidden
-        className="absolute -inset-x-5 -inset-y-10 rounded-[2.5rem] bg-gradient-to-br from-accent-soft via-surface to-card lg:-right-24 lg:left-6"
+        className="absolute inset-0 rounded-[2rem] bg-gradient-to-br from-accent-soft/80 via-surface to-surface/40"
       />
       <div
         aria-hidden
-        className="absolute -inset-x-5 -inset-y-10 rounded-[2.5rem] opacity-60 [background-image:radial-gradient(rgb(31_30_29/0.13)_1px,transparent_1px)] [background-size:18px_18px] [mask-image:radial-gradient(ellipse_at_center,black_20%,transparent_75%)] lg:-right-24 lg:left-6"
+        className="absolute inset-0 rounded-[2rem] opacity-70 [background-image:radial-gradient(rgb(31_30_29/0.12)_1px,transparent_1px)] [background-size:18px_18px] [mask-image:radial-gradient(ellipse_at_top_right,black_10%,transparent_70%)]"
       />
 
-
-      <div className="relative lg:h-[520px]">
-        {/* จอหลัง: Cal Tax — เห็นแค่บางส่วน ให้ความรู้สึกว่ามีงานเป็นชั้น ๆ */}
-        <div
-          aria-hidden
-          className="absolute right-0 top-4 hidden w-[62%] rotate-[3deg] opacity-80 lg:block [&_[role=img]]:bg-transparent [&_[role=img]]:p-0"
-        >
-          <div className={`rounded-2xl ${lift}`}>
-            <CalTaxShot />
-          </div>
-        </div>
-        {/* จอหน้า: Lead Schedule */}
-        <div className="relative lg:absolute lg:left-0 lg:top-24 lg:w-[80%]">
-          <div className={`rounded-3xl ${lift}`}>
-            <ProductPeek />
-          </div>
+      <div className="relative">
+        {/* หน้าจอ: ถอดกรอบเทา (mat) ของ ProductPeek ออก เหลือหน้าต่างขาวกับเงานุ่ม */}
+        <div className={`rounded-2xl [&>[role=img]]:bg-transparent [&>[role=img]]:p-0 sm:[&>[role=img]]:p-0 ${lift}`}>
+          <ProductPeek />
         </div>
 
-        {/* ป้ายผู้สอบบัญชีรับอนุญาต */}
+        {/* ป้ายผู้สอบบัญชีรับอนุญาต — เยื้องออกซ้ายของหน้าจอ ให้เห็นเป็นชั้น โดยไม่บังตัวเลข */}
         <div
-          className={`relative mt-5 flex items-center gap-4 rounded-2xl border border-line bg-card/95 p-4 pr-6 backdrop-blur sm:max-w-xs lg:absolute lg:bottom-0 lg:right-4 lg:mt-0 ${lift}`}
+          className={`relative mt-4 flex w-fit items-center gap-4 rounded-2xl border border-line bg-card p-4 pr-6 lg:-ml-8 ${lift}`}
         >
           <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-accent-soft text-accent-ink">
             <IconSeal size={24} />
