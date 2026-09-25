@@ -1,0 +1,41 @@
+/* Motion ของหน้า Veyra — เคลื่อนแค่ transform เท่านั้น ไม่แตะ opacity
+   ถ้า animation ไม่ทำงาน (แท็บซ่อน, headless, reduced motion) เนื้อหาก็ยังเห็นครบ */
+
+.phoneIn {
+  animation: phone-in 900ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.phoneInLate {
+  animation: phone-in 900ms cubic-bezier(0.16, 1, 0.3, 1) 140ms both;
+}
+
+.float {
+  animation: float 7s ease-in-out 1s infinite;
+}
+
+@keyframes phone-in {
+  from {
+    transform: translateY(48px) rotate(var(--tilt, 0deg)) scale(0.96);
+  }
+  to {
+    transform: translateY(0) rotate(var(--tilt, 0deg)) scale(1);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 0 -10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .phoneIn,
+  .phoneInLate,
+  .float {
+    animation: none;
+  }
+}
