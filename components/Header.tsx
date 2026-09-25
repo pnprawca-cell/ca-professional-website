@@ -22,13 +22,13 @@ export default function Header() {
           </span>
         </Link>
 
-        <nav className="hidden items-center gap-1 md:flex">
+        <nav className="hidden items-center gap-1 lg:flex">
           {nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               aria-current={isActive(item.href) ? "page" : undefined}
-              className={`rounded-lg px-3 py-2 text-sm transition-colors hover:bg-surface ${
+              className={`whitespace-nowrap rounded-lg px-3 py-2 text-sm transition-colors hover:bg-surface ${
                 isActive(item.href) ? "font-semibold" : "text-muted"
               }`}
             >
@@ -50,7 +50,7 @@ export default function Header() {
         </nav>
 
         <button
-          className="flex h-11 w-11 items-center justify-center rounded-lg hover:bg-surface md:hidden"
+          className="flex h-11 w-11 items-center justify-center rounded-lg hover:bg-surface lg:hidden"
           onClick={() => setOpen(!open)}
           aria-label="เปิดเมนู"
           aria-expanded={open}
@@ -66,7 +66,7 @@ export default function Header() {
       </div>
 
       {open && (
-        <nav className="border-t border-line bg-background px-5 py-3 md:hidden">
+        <nav className="border-t border-line bg-background px-5 py-3 lg:hidden">
           {nav.map((item) => (
             <Link
               key={item.href}

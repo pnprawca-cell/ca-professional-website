@@ -80,15 +80,9 @@ export default function Footer() {
           <p>
             เลขทะเบียนนิติบุคคล {company.registrationNumber} · ผู้สอบบัญชีรับอนุญาตเลขที่ {company.auditorLicenseNumber}
           </p>
-          <p className="flex gap-4">
-            <Link href="/legal/privacy" className="transition-colors hover:text-foreground">
-              นโยบายความเป็นส่วนตัว
-            </Link>
-            {/* หน้าแอป Veyra (ใช้กับ OAuth consent ของ Google) — ไม่อยู่ในเมนูหลักโดยตั้งใจ */}
-            <Link href="/veyra" className="transition-colors hover:text-foreground">
-              Veyra
-            </Link>
-          </p>
+          <Link href="/legal/privacy" className="transition-colors hover:text-foreground">
+            นโยบายความเป็นส่วนตัว
+          </Link>
         </div>
       </div>
     </footer>

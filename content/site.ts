@@ -47,11 +47,11 @@ export const products = {
     description:
       "จัดการงานตรวจสอบตั้งแต่วางแผนจนออกหน้ารายงาน รวมกระดาษทำการ Lead Schedule Materiality Cal Tax และงบการเงิน NPAE ไว้ในที่เดียว",
     /**
-     * ชั่วคราว: AuditFlow เสิร์ฟแยกที่อยู่ต่อสำนักงาน (`<slug>.ca-professional.com` — สเปก §2)
-     * จึงยังไม่มี URL กลางให้กดเข้าใช้งานได้ทันที ระหว่างนี้ปุ่มบนหน้า /login ชี้ไปพอร์ทัลไปก่อน
-     * เมื่อมีหน้า login กลางแล้ว เปลี่ยนบรรทัดนี้บรรทัดเดียว หน้า /login ตามเอง
+     * ระบบ AuditFlow ที่ใช้งานจริง (Cloudflare Tunnel → เครื่องออฟฟิศ · ดู Audit-platform/deploy/README.md)
+     * host นี้มี Cloudflare Access ครอบ (One-time PIN เฉพาะอีเมลที่อนุญาต) — คนนอก allowlist จะติดหน้า Access
+     * เมื่อเปิดที่อยู่แยกต่อสำนักงาน (`<slug>.ca-professional.com`) แล้ว ค่อยกลับมาแก้บรรทัดนี้
      */
-    loginUrl: portalUrl,
+    loginUrl: "https://app.ca-professional.com/login",
   },
   practiflow: {
     name: "PractiFlow",
@@ -107,6 +107,7 @@ export const nav = [
   { label: "บริการสอบบัญชี", href: "/services/audit" },
   { label: "AuditFlow", href: "/products/auditflow" },
   { label: "PractiFlow", href: "/products/practiflow" },
+  { label: "Veyra", href: "/veyra" },
   { label: "ราคา", href: "/pricing" },
   { label: "บทความ", href: "/blog" },
   { label: "เกี่ยวกับเรา", href: "/about" },

@@ -8,7 +8,7 @@ import styles from "./veyra.module.css";
 
 /*
  * App homepage ของ Veyra สำหรับ OAuth consent screen ของ Google
- * ตั้งใจไม่ใส่ในเมนูหลัก (nav) — เข้าจากลิงก์ใน footer หรือจาก Google เท่านั้น
+ * อยู่ในเมนูหลัก (content/site.ts → nav) ต่อจาก PractiFlow
  *
  * หน้านี้ใช้สีของแอป Veyra (indigo/violet จาก src/theme/tokens.ts ของแอป) เป็น art direction เฉพาะหน้า
  * ส่วน header/footer/ฟอนต์ยังเป็นของเว็บบริษัท
