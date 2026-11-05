@@ -30,7 +30,7 @@ export const company = {
   nameTh: "บริษัท ซีเอ โปรเฟสชั่นแนล เซอร์วิสเซส จำกัด",
   shortName: "CA Professional",
   tagline: "สำนักงานสอบบัญชีที่สร้างเครื่องมือของตัวเอง",
-  email: "info@ca-professional.com",
+  email: "ca.profesional1@gmail.com",
   line: "lin.ee/yv4KFrB",
   lineUrl: "https://lin.ee/yv4KFrB",
   lineQrSrc: "/line-qr.png",
